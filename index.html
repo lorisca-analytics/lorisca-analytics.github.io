@@ -106,8 +106,10 @@ footer { border-top:1px solid var(--hairline); padding:2.5rem 0 3rem; }
 .foot { display:flex; justify-content:space-between; gap:2rem; flex-wrap:wrap; }
 .foot .f-name { font-family:var(--display); font-weight:800; font-size:1rem; }
 .foot .f-sub { font-size:.88rem; color:var(--steel); margin-top:.3rem; }
-.foot .f-links { display:flex; gap:1.4rem; align-items:flex-start; }
-.foot .f-links a { font-size:.9rem; font-weight:600; text-decoration:none; }
+.f-label { font-family:var(--mono); font-size:.62rem; font-weight:600; letter-spacing:.14em; color:var(--steel); margin-bottom:.8rem; }
+.foot .f-links { display:flex; gap:.8rem; align-items:flex-start; flex-wrap:wrap; }
+.foot .f-links a { font-size:1.05rem; font-weight:700; color:var(--ink); text-decoration:none; border:2px solid var(--ink); border-radius:10px; padding:.6rem 1.1rem; }
+.foot .f-links a:hover { background:var(--ink); color:var(--white); }
 </style>
 </head>
 <body>
@@ -132,7 +134,7 @@ footer { border-top:1px solid var(--hairline); padding:2.5rem 0 3rem; }
     <div class="hero-grid">
       <div class="hero-copy">
         <h1>Business problems, <em>rebuilt</em> end to end.</h1>
-        <p class="lede">I'm <strong>Lorisca</strong> — I take messy operational questions, rebuild them from raw data, and present the answer the way a manager would actually read it. This is the analytics lane of my work: <strong>every project is reproducible</strong>, the data and the method ship with it.</p>
+        <p class="lede">The analytics portfolio of <strong>Lorisca Tuuk</strong>. Every project starts from a business question, rebuilds the numbers from raw data, and ships a working output — <strong>data and method included</strong>.</p>
       </div>
       <aside class="hero-side">
         <div class="side-card">
@@ -154,7 +156,7 @@ footer { border-top:1px solid var(--hairline); padding:2.5rem 0 3rem; }
         <div class="sh-kicker">01 — HOW I READ A PROBLEM</div>
         <h2>Three moves, <em>every analysis.</em></h2>
       </div>
-      <div class="sh-side">The same lens behind each project below — stated once, so the work doesn't have to explain itself twice.</div>
+      <div class="sh-side">The three moves behind every project on this page.</div>
     </div>
     <div class="tim">
       <div class="node trap">
@@ -209,7 +211,7 @@ footer { border-top:1px solid var(--hairline); padding:2.5rem 0 3rem; }
         <div class="sh-kicker">03 — HOW IT WORKS</div>
         <h2>One spine, <em>every project.</em></h2>
       </div>
-      <div class="sh-side">The machinery behind the results — this is what a hiring manager is actually buying.</div>
+      <div class="sh-side">The standard every project on this page was held to.</div>
     </div>
     <div class="method-grid">
       <div class="method"><div class="m-num">M—01</div><h3>Business question first</h3><p>No analysis without a decision it informs. The finding leads; the method follows.</p></div>
@@ -224,12 +226,15 @@ footer { border-top:1px solid var(--hairline); padding:2.5rem 0 3rem; }
   <div class="wrap foot">
     <div>
       <div class="f-name">Lorisca Tuuk</div>
-      <div class="f-sub">MBA in Analytics — the bridge between business language and technical language.</div>
+      <div class="f-sub">MBA in Analytics · San Francisco</div>
     </div>
-    <div class="f-links">
-      <a href="mailto:loriscatuuk@gmail.com">Email</a>
-      <a href="https://github.com/lorisca-analytics">GitHub org</a>
-      <a href="https://lori-sca.github.io">Personal site</a>
+    <div>
+      <div class="f-label">LINKS</div>
+      <div class="f-links">
+        <a href="mailto:loriscatuuk@gmail.com">Email →</a>
+        <a href="https://github.com/lorisca-analytics">GitHub org →</a>
+        <a href="https://lori-sca.github.io">Personal site →</a>
+      </div>
     </div>
   </div>
 </footer>
