@@ -99,4 +99,15 @@ const LANES = [
       { title: "Designing a scorecard for a firm that only measured revenue" },
     ],
   },
+  {
+    id: "consulting",
+    name: "Consulting",
+    blurb:
+      "Live-client engagements — real stakeholders, real constraints. Team-based consulting work with deliverables, distinct from solo analyses.",
+    projects: [],
+    pipeline: [
+      { title: "M&T Bank — live-client engagement (D1–D6 deliverables)" },
+      { title: "Autodesk AutoProc — LATAM procurement strategy" },
+    ],
+  },
 ];
