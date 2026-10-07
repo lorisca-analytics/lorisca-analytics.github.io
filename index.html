@@ -37,17 +37,18 @@
           <span class="eyebrow" id="hero-eyebrow"></span>
           <h1 id="hero-headline"></h1>
           <p class="lede" id="hero-lede"></p>
-          <div class="cta-row">
+          <div class="cta-row" id="hero-ctas">
             <a class="btn primary" data-org-github href="https://github.com/lorisca-analytics" target="_blank" rel="noopener">The org on GitHub</a>
             <a class="btn ghost" href="https://lori-sca.github.io">Back to main site</a>
           </div>
         </div>
         <aside class="hero-side">
           <div class="now-card">
-            <p class="nc-title">What lives here</p>
+            <p class="nc-title" id="nc-title">What lives here</p>
+            <div id="nc-rows">
             <div class="nc-row"><span class="k">Format</span><span class="v">Case studies with repos — queries, notebooks, visuals</span></div>
-            
             <div class="nc-row"><span class="k">Pipeline</span><span class="v">Titles below are works in progress</span></div>
+            </div>
           </div>
         </aside>
       </div>
@@ -74,9 +75,10 @@
 
 <script src="site.js"></script>
 <script>
-  Promise.all([loadJSON("data/site.json"), loadJSON("data/hero.json"), loadJSON("data/lanes.json")])
-    .then(([site, hero, data]) => {
+  Promise.all([loadJSON("data/site.json"), loadJSON("data/hero.json"), loadJSON("data/lanes.json"), loadJSON("data/page.json").catch(() => null)])
+    .then(([site, hero, data, page]) => {
       applyOrgChrome(site);
+      renderOrgPage(site, page);
       document.getElementById("hero-eyebrow").textContent = hero.eyebrow;
       document.getElementById("hero-headline").textContent = hero.headline;
       document.getElementById("hero-lede").textContent = hero.lede;
@@ -95,14 +97,19 @@
         const home = document.createElement("a");
         home.dataset.nav = "main";
         home.href = site.mainSite;
-        home.textContent = "Lorisca ↗";
+        if (page && page.backLink) {
+          if (page.backLink.label) home.textContent = page.backLink.label;
+          if (page.backLink.href) home.href = page.backLink.href;
+        } else {
+          home.textContent = "Lorisca ↗";
+        }
         navLinks.appendChild(home);
       }
       const sub = document.querySelector(".subnav-inner");
       if (sub) {
         sub.innerHTML = "";
         const top = document.createElement("a");
-        top.href = "#top"; top.textContent = "Top";
+        top.href = "#top"; top.textContent = (page && page.subnavTop) || "Top";
         sub.appendChild(top);
         lanes.forEach((lane) => {
           const a = document.createElement("a");
@@ -121,7 +128,7 @@
         wrap.className = "wrap";
         wrap.innerHTML =
           '<div class="section-head"><div class="sh-main">' +
-          '<span class="eyebrow">Lane ' + (i + 1) + "</span><h2></h2></div>" +
+          '<span class="eyebrow">' + esc((page && page.laneEyebrow) || "Lane") + " " + (i + 1) + "</span><h2></h2></div>" +
           '<p class="sh-side"></p></div>' +
           '<div id="lane-mount-' + lane.id + '"></div>';
         wrap.querySelector("h2").textContent = lane.name;

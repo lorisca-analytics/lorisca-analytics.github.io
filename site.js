@@ -11,6 +11,58 @@ function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 }
 
+/* ---------- data-driven page furniture (data/page.json) ---------- */
+function setText(id, v) {
+  const e = document.getElementById(id);
+  if (e && v != null) e.textContent = v;
+}
+function setMeta(meta) {
+  if (!meta) return;
+  if (meta.title) document.title = meta.title;
+  const md = document.querySelector('meta[name="description"]');
+  if (md && meta.description) md.setAttribute("content", meta.description);
+}
+/* Renders the editable furniture: back-to-main link, hero buttons,
+   and the "what lives here" card. Static HTML stays as the no-JS fallback. */
+function renderOrgPage(site, page) {
+  if (!page) return;
+  setMeta(page.meta);
+  if (page.backLink) {
+    document.querySelectorAll('[data-nav="main"]').forEach((a) => {
+      if (page.backLink.label) a.textContent = page.backLink.label;
+      if (page.backLink.href) a.href = page.backLink.href;
+    });
+  }
+  const ctas = document.getElementById("hero-ctas");
+  if (ctas && page.heroCtas && page.heroCtas.length) {
+    ctas.innerHTML = "";
+    page.heroCtas.forEach((c, i) => {
+      const a = document.createElement("a");
+      a.className = "btn" + (i === 0 ? " primary" : " ghost");
+      a.textContent = c.label || "";
+      a.href = (c.orgGithub && site && site.githubOrg) ? site.githubOrg : (c.href || "#");
+      if (c.orgGithub || c.newTab) { a.target = "_blank"; a.rel = "noopener"; }
+      ctas.appendChild(a);
+    });
+  }
+  const nc = page.nowCard;
+  const ncTitle = document.getElementById("nc-title");
+  const ncRows = document.getElementById("nc-rows");
+  if (nc && ncTitle && ncRows) {
+    ncTitle.textContent = nc.title || "";
+    ncRows.innerHTML = "";
+    (nc.rows || []).forEach((r) => {
+      const d = document.createElement("div");
+      d.className = "nc-row";
+      const k = document.createElement("span"); k.className = "k"; k.textContent = r.k || "";
+      const v = document.createElement("span"); v.className = "v"; v.textContent = r.v || "";
+      d.appendChild(k); d.appendChild(v);
+      ncRows.appendChild(d);
+    });
+  }
+}
+
+
 function linkRow(links) {
   const row = el("div", "card-links");
   links.forEach((l) => {

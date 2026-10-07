@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "title": "Analytics Work — Lorisca Cessia",
+    "description": "Case studies in talent systems, analytics, and operations. The obvious metric points one way; the mechanism underneath points the other."
+  },
+  "backLink": {
+    "label": "Lorisca ↗",
+    "href": "https://lori-sca.github.io"
+  },
+  "heroCtas": [
+    {
+      "label": "The org on GitHub",
+      "href": "",
+      "orgGithub": true,
+      "newTab": true
+    },
+    {
+      "label": "Back to main site",
+      "href": "https://lori-sca.github.io",
+      "orgGithub": false,
+      "newTab": false
+    }
+  ],
+  "nowCard": {
+    "title": "What lives here",
+    "rows": [
+      {
+        "k": "Format",
+        "v": "Case studies with repos — queries, notebooks, visuals"
+      },
+      {
+        "k": "Pipeline",
+        "v": "Titles below are works in progress"
+      }
+    ]
+  },
+  "laneEyebrow": "Lane",
+  "subnavTop": "Top"
+}
