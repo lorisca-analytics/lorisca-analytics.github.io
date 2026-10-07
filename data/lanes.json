@@ -28,6 +28,62 @@
             "hers": "Reported the median that broke my own headline finding — the premium flips when IT managers are excluded.",
             "result": "Approval gap never passed 1.7 points. Business volume +9.1% while analytics fell 6.1%. 77 durable business sponsors identified — EY leads with 13,329 filings at 97.8%.",
             "lesson": "Visa risk is the wrong variable. The decision turns on market direction and pay, not approval odds."
+          },
+          "year": "2026",
+          "group": "mba",
+          "setting": "Solo, in two stages. Python for Massachusetts, then SQL for the whole country.",
+          "tools": [
+            "Python",
+            "pandas",
+            "MySQL"
+          ],
+          "stat": {
+            "prefix": "",
+            "num": 3.47,
+            "decimals": 2,
+            "suffix": "M",
+            "label": "federal filings analyzed"
+          },
+          "context": "International graduates choose between business and analytics roles partly on which gets sponsored. The advice they get is anecdote.",
+          "outcome": "Across 3,471,247 filings, approval rates never differed by more than 1.7 points.",
+          "calls": [
+            "Kept every duplicate: dropping them would have flipped the ranking.",
+            "Reported medians. One hourly-keyed salary turned $195,870 into $407 million.",
+            "Grouped roles by federal occupation code, not keywords."
+          ],
+          "chart": {
+            "type": "bars",
+            "title": "Massachusetts filings, raw file to comparison",
+            "caption": "I kept 32,867 duplicates. A repeated filing is an employer sponsoring again.",
+            "items": [
+              {
+                "label": "Raw filings",
+                "value": 137866,
+                "display": "137,866"
+              },
+              {
+                "label": "H-1B only",
+                "value": 135307,
+                "display": "135,307"
+              },
+              {
+                "label": "Certified, duplicates kept",
+                "value": 123497,
+                "display": "123,497"
+              },
+              {
+                "label": "Business roles",
+                "value": 16255,
+                "display": "16,255",
+                "highlight": true
+              },
+              {
+                "label": "Analytics roles",
+                "value": 14035,
+                "display": "14,035",
+                "highlight": true
+              }
+            ]
           }
         }
       ],
