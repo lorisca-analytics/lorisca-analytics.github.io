@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Martian+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="work.css">
 </head>
 <body data-page="work">
 
@@ -74,77 +75,6 @@
 </footer>
 
 <script src="site.js"></script>
-<script>
-  Promise.all([loadJSON("data/site.json"), loadJSON("data/hero.json"), loadJSON("data/lanes.json"), loadJSON("data/page.json").catch(() => null)])
-    .then(([site, hero, data, page]) => {
-      applyOrgChrome(site);
-      renderOrgPage(site, page);
-      mountSectionMedia("top", hero);
-      document.getElementById("hero-eyebrow").textContent = hero.eyebrow;
-      document.getElementById("hero-headline").textContent = hero.headline;
-      document.getElementById("hero-lede").textContent = hero.lede;
-
-      const lanes = data.lanes || [];
-      // nav + subnav from lane data so renames/adds stay in sync
-      const navLinks = document.querySelector(".nav-links");
-      if (navLinks) {
-        navLinks.innerHTML = "";
-        lanes.forEach((lane) => {
-          const a = document.createElement("a");
-          a.href = "#" + lane.id;
-          a.textContent = lane.name;
-          navLinks.appendChild(a);
-        });
-        const home = document.createElement("a");
-        home.dataset.nav = "main";
-        home.href = site.mainSite;
-        if (page && page.backLink) {
-          if (page.backLink.label) home.textContent = page.backLink.label;
-          if (page.backLink.href) home.href = page.backLink.href;
-        } else {
-          home.textContent = "Lorisca ↗";
-        }
-        navLinks.appendChild(home);
-      }
-      const sub = document.querySelector(".subnav-inner");
-      if (sub) {
-        sub.innerHTML = "";
-        const top = document.createElement("a");
-        top.href = "#top"; top.textContent = (page && page.subnavTop) || "Top";
-        sub.appendChild(top);
-        lanes.forEach((lane) => {
-          const a = document.createElement("a");
-          a.href = "#" + lane.id;
-          a.textContent = lane.name;
-          sub.appendChild(a);
-        });
-      }
-
-      const mount = document.getElementById("lanes");
-      lanes.forEach((lane, i) => {
-        const band = document.createElement(i % 2 === 0 ? "section" : "div");
-        band.className = i % 2 === 0 ? "section" : "band";
-        band.id = lane.id;
-        const wrap = document.createElement("div");
-        wrap.className = "wrap";
-        wrap.innerHTML =
-          '<div class="section-head"><div class="sh-main">' +
-          '<span class="eyebrow">' + esc((page && page.laneEyebrow) || "Lane") + " " + (i + 1) + "</span><h2></h2></div>" +
-          '<p class="sh-side"></p></div>' +
-          '<div id="lane-mount-' + lane.id + '"></div>';
-        wrap.querySelector("h2").textContent = lane.name;
-        wrap.querySelector(".sh-side").textContent = lane.blurb;
-        const laneEmb = embedNode(lane.embed);
-        if (laneEmb) wrap.querySelector(".section-head").appendChild(laneEmb);
-        band.appendChild(wrap);
-        mountSectionMedia(lane.id, lane);
-        mount.appendChild(band);
-        renderLane("lane-mount-" + lane.id, lane);
-      });
-    })
-    .catch(() => {
-      document.getElementById("hero-headline").textContent = "Content couldn't load — try refreshing.";
-    });
-</script>
+<script src="work.js"></script>
 </body>
 </html>
