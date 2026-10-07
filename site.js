@@ -149,7 +149,7 @@ function renderLane(mountId, lane) {
     const head = el("p", "pipe-head", "In the pipeline");
     const note = el(
       "p", "pipe-note",
-      "Real titles from the working inventory — no mock cards, no visuals until the work ships. Each one graduates to a full case study above."
+      "Works in progress. Each graduates to a full case study when it ships."
     );
     idx.appendChild(head); idx.appendChild(note);
     pipe.forEach((t) => {

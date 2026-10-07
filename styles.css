@@ -286,3 +286,17 @@ footer { border-top: 1px solid var(--hairline); background: var(--white); }
   display: flex; align-items: center; justify-content: center; margin-bottom: 1.4rem;
 }
 .cols-1 { grid-template-columns: minmax(0, 42rem); }
+
+/* ---------- Obvious footer ---------- */
+.site-footer { border-top: 2px solid var(--ink); background: var(--white); }
+.site-footer .wrap { padding-top: 2.6rem; padding-bottom: 2.6rem; }
+.foot-links { display: flex; gap: 1.7rem; flex-wrap: wrap; margin-bottom: 1.3rem; }
+.foot-links a {
+  font-family: var(--display); font-weight: 700; font-size: 1.02rem;
+  letter-spacing: -0.01em; color: var(--ink); text-decoration: none;
+}
+.foot-links a:hover { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
+.site-footer .fine {
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--steel);
+}

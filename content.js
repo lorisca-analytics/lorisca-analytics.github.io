@@ -17,7 +17,7 @@ const SITE = {
 const HERO = {
   eyebrow: "LORISCA-ANALYTICS · CASE STUDIES",
   headline: "Work that shows its mechanism.",
-  lede: "The obvious metric points one way; the mechanism underneath points the other. These case studies are the search for the mechanism — in hiring systems, in data, in operations.",
+  lede: "Case studies in hiring systems, data, and operations. Each one states its limits alongside its results.",
 };
 
 const LANES = [
@@ -25,7 +25,7 @@ const LANES = [
     id: "talent",
     name: "Talent Systems",
     blurb:
-      "Hiring, retention, and workforce data — built so the people deciding can see what's actually happening. The deepest bench: this is where the systems ran for years.",
+      "Hiring, retention, and workforce data.",
     projects: [
       {
         id: "h1b-sponsorship",
@@ -70,7 +70,7 @@ const LANES = [
     id: "models",
     name: "Analytics & Models",
     blurb:
-      "SQL, machine learning, and BI — models and dashboards built to support one decision, with their limits stated. Weak results published, not buried.",
+      "SQL, machine learning, and BI — built to support one decision, with limits stated.",
     projects: [],
     pipeline: [
       { title: "Predicting income bracket, and knowing when to stop" },
@@ -86,7 +86,7 @@ const LANES = [
     id: "strategy-ops",
     name: "Strategy & Operations",
     blurb:
-      "Business cases, pricing, and delivery — testing the story against its own numbers before anyone funds it, and fixing the stage where the work actually stops flowing.",
+      "Business cases, pricing, and delivery — the numbers behind the story.",
     projects: [],
     pipeline: [
       { title: "Two identical-looking tech giants with opposite economics" },
