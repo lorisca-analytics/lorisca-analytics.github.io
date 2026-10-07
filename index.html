@@ -79,6 +79,7 @@
     .then(([site, hero, data, page]) => {
       applyOrgChrome(site);
       renderOrgPage(site, page);
+      mountSectionMedia("top", hero);
       document.getElementById("hero-eyebrow").textContent = hero.eyebrow;
       document.getElementById("hero-headline").textContent = hero.headline;
       document.getElementById("hero-lede").textContent = hero.lede;
@@ -136,6 +137,7 @@
         const laneEmb = embedNode(lane.embed);
         if (laneEmb) wrap.querySelector(".section-head").appendChild(laneEmb);
         band.appendChild(wrap);
+        mountSectionMedia(lane.id, lane);
         mount.appendChild(band);
         renderLane("lane-mount-" + lane.id, lane);
       });

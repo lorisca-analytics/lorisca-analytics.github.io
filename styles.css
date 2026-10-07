@@ -328,3 +328,9 @@ section[id], div[id] { scroll-margin-top: 104px; }
 }
 .fun-card p { color: var(--steel); font-size: .95rem; line-height: 1.6; }
 @media (max-width: 900px) { .fun-grid { grid-template-columns: 1fr; } }
+
+/* ---------- section media: editor-added picture + links (data-driven) ---------- */
+.sec-media { margin: 2rem 0 0; border-radius: 14px; overflow: hidden; }
+.sec-media img { width: 100%; display: block; }
+.sec-media figcaption { font-size: .85rem; color: var(--steel); margin-top: .6rem; }
+.sec-links { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: 1.25rem; }

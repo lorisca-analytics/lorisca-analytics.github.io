@@ -8,6 +8,53 @@ function el(tag, cls, html) {
 }
 
 function esc(s) {
+/* Mounts an editor-added picture + links for a section.
+   Renders nothing when both are empty. Safe to call on re-render. */
+function mountSectionMedia(sectionId, sec) {
+  const section = document.getElementById(sectionId);
+  if (!section || !sec) return;
+  section.querySelectorAll(".sec-media, .sec-links").forEach((e) => e.remove());
+  const image = (sec.image || "").trim();
+  const links = (sec.links || []).filter((l) => l && (l.label || l.href));
+  if (!image && !links.length) return;
+  const frag = document.createDocumentFragment();
+  if (image) {
+    const fig = document.createElement("figure");
+    fig.className = "sec-media";
+    const img = document.createElement("img");
+    img.src = image;
+    img.alt = sec.imageAlt || "";
+    img.loading = "lazy";
+    fig.appendChild(img);
+    if (sec.imageCaption) {
+      const cap = document.createElement("figcaption");
+      cap.textContent = sec.imageCaption;
+      fig.appendChild(cap);
+    }
+    frag.appendChild(fig);
+  }
+  if (links.length) {
+    const row = document.createElement("div");
+    row.className = "sec-links";
+    links.forEach((l) => {
+      const a = document.createElement("a");
+      a.className = "text-link";
+      a.href = l.href || "#";
+      a.textContent = (l.label || l.href || "Link") + " \u2192";
+      if (l.newTab || /^https?:/.test(a.href)) { a.target = "_blank"; a.rel = "noopener"; }
+      row.appendChild(a);
+    });
+    frag.appendChild(row);
+  }
+  const head = section.querySelector(".section-head");
+  if (head) head.after(frag);
+  else {
+    const wrap = section.querySelector(".wrap");
+    if (wrap) wrap.prepend(frag);
+    else section.prepend(frag);
+  }
+}
+
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 }
 
