@@ -3,91 +3,236 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Analytics Work — Lorisca Cessia</title>
-<meta name="description" content="Case studies in talent systems, analytics, and operations. The obvious metric points one way; the mechanism underneath points the other.">
+<title>Analytics Work — Lorisca Tuuk</title>
+<meta name="description" content="The analytics portfolio of Lorisca Tuuk: business problems rebuilt end to end, presented the way a manager would read them.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Martian+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Martian+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* LORISCA ANALYTICS ORG — v2 design language
+   Bold grotesque display · 12-col grid · hard section bands
+   Palette: white / mist / ink / steel / slate blue
+   Type: Archivo (display) · Plus Jakarta Sans (body) · Martian Mono (micro-labels) */
+:root {
+  --white:#ffffff; --mist:#eef2f6; --mist-deep:#e2e9f0;
+  --ink:#1e2d42; --steel:#4a6a8f; --accent:#5b7fa6; --hairline:#d5dfe8;
+  --display:"Archivo",system-ui,sans-serif; --body:"Plus Jakarta Sans",system-ui,sans-serif;
+  --mono:"Martian Mono",ui-monospace,monospace;
+  --gutter:clamp(1.25rem,4vw,3rem); --section-pad:clamp(4.5rem,10vw,9rem); --measure:66ch;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:var(--body); font-size:17px; line-height:1.65; color:var(--ink); background:var(--white); -webkit-font-smoothing:antialiased; }
+a { color:var(--steel); }
+::selection { background:var(--ink); color:var(--white); }
+h1 em, h2 em { font-style:normal; color:var(--accent); }
+.wrap { max-width:1200px; margin:0 auto; padding-left:var(--gutter); padding-right:var(--gutter); }
+
+/* Nav */
+.nav { position:sticky; top:0; z-index:50; background:rgba(255,255,255,.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--hairline); }
+.nav-inner { max-width:1200px; margin:0 auto; padding:.9rem var(--gutter); display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.wordmark { font-family:var(--display); font-weight:800; font-size:1.05rem; letter-spacing:-.02em; color:var(--ink); text-decoration:none; display:flex; align-items:center; gap:.7rem; }
+.wm-tag { font-family:var(--mono); font-size:.6rem; font-weight:600; letter-spacing:.12em; color:var(--steel); border:1px solid var(--hairline); border-radius:4px; padding:.25rem .5rem; }
+.nav-links { display:flex; gap:1.4rem; }
+.nav-links a { font-size:.9rem; font-weight:600; text-decoration:none; color:var(--steel); }
+.nav-links a:hover { color:var(--ink); }
+
+/* Hero — 12-col, 7/5 split */
+.hero { padding:clamp(3.5rem,8vw,6.5rem) 0 clamp(3rem,6vw,5rem); }
+.hero-grid { display:grid; grid-template-columns:repeat(12,1fr); gap:1.5rem; align-items:start; }
+.hero-copy { grid-column:1/8; }
+.hero-side { grid-column:8/13; }
+.hero h1 { font-family:var(--display); font-weight:800; font-size:clamp(2.6rem,5.2vw,4.4rem); letter-spacing:-.03em; line-height:1.04; }
+.hero .lede { font-size:1.15rem; color:var(--steel); max-width:var(--measure); margin-top:1.4rem; }
+.hero .lede strong { color:var(--ink); }
+@media(max-width:860px){ .hero-copy,.hero-side{grid-column:1/13;} }
+
+/* Side card */
+.side-card { border:1px solid var(--hairline); border-radius:14px; padding:1.6rem; background:var(--white); }
+.side-card .sc-label { font-family:var(--mono); font-size:.62rem; font-weight:600; letter-spacing:.12em; color:var(--steel); margin-bottom:1rem; }
+.detail-row { display:grid; grid-template-columns:7.5rem 1fr; gap:1rem; padding:.7rem 0; border-top:1px solid var(--hairline); font-size:.92rem; }
+.detail-row .k { color:var(--steel); font-weight:600; }
+.detail-row a { color:var(--ink); font-weight:600; }
+
+/* Sections — hard bands */
+.band { background:var(--mist); }
+.band > .wrap { padding-top:var(--section-pad); padding-bottom:var(--section-pad); }
+.section { padding:var(--section-pad) 0; }
+.section-head { display:grid; grid-template-columns:repeat(12,1fr); gap:1.5rem; margin-bottom:2.5rem; }
+.section-head .sh-main { grid-column:1/9; }
+.section-head .sh-side { grid-column:9/13; color:var(--steel); font-size:.95rem; line-height:1.6; }
+.section-head h2 { font-family:var(--display); font-weight:800; font-size:clamp(1.9rem,3.6vw,2.9rem); letter-spacing:-.025em; line-height:1.08; }
+.section-head .sh-kicker { font-family:var(--mono); font-size:.65rem; font-weight:600; letter-spacing:.14em; color:var(--accent); margin-bottom:.8rem; }
+@media(max-width:860px){ .section-head .sh-main,.section-head .sh-side{grid-column:1/13;} }
+
+/* Trap → Insight → Machine diagram */
+.tim { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:1.2rem; align-items:stretch; margin-top:.5rem; }
+@media(max-width:900px){ .tim{grid-template-columns:1fr;} .tim .arrow{display:none;} }
+.tim .node { background:var(--white); border:1px solid var(--hairline); border-radius:16px; padding:1.8rem; }
+.tim .node .t-label { font-family:var(--mono); font-size:.62rem; font-weight:600; letter-spacing:.14em; margin-bottom:.9rem; }
+.tim .node.trap .t-label { color:#b91c1c; }
+.tim .node.insight .t-label { color:var(--accent); }
+.tim .node.machine .t-label { color:var(--ink); }
+.tim .node h3 { font-family:var(--display); font-weight:800; font-size:1.25rem; letter-spacing:-.015em; line-height:1.2; margin-bottom:.6rem; }
+.tim .node p { font-size:.93rem; color:var(--steel); }
+.tim .arrow { display:flex; align-items:center; font-family:var(--display); font-weight:800; font-size:1.8rem; color:var(--accent); }
+
+/* Project cards — badge → title → hook → metric → links */
+.card-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.5rem; }
+@media(max-width:860px){ .card-grid{grid-template-columns:1fr;} }
+.pcard { background:var(--white); border:1px solid var(--hairline); border-radius:16px; padding:2rem; display:flex; flex-direction:column; }
+.badge { align-self:flex-start; font-family:var(--mono); font-size:.62rem; font-weight:600; letter-spacing:.12em; padding:.35rem .7rem; border-radius:999px; margin-bottom:1.1rem; }
+.badge.live { background:var(--ink); color:var(--white); }
+.pcard h3 { font-family:var(--display); font-weight:800; font-size:1.55rem; letter-spacing:-.02em; line-height:1.15; }
+.pcard h3 a { color:var(--ink); text-decoration:none; }
+.pcard .story { color:var(--steel); margin-top:.7rem; font-size:.98rem; }
+.pcard .story strong { color:var(--ink); }
+.pcard .metric { margin-top:1.2rem; padding-top:1.2rem; border-top:1px solid var(--hairline); font-family:var(--display); font-weight:800; font-size:1.05rem; letter-spacing:-.01em; }
+.pcard .metric span { display:block; font-family:var(--body); font-weight:500; font-size:.82rem; color:var(--steel); letter-spacing:0; margin-top:.2rem; }
+.pcard .links { margin-top:1.4rem; display:flex; gap:1.2rem; }
+.pcard .links a { font-weight:700; font-size:.92rem; color:var(--ink); text-decoration:none; border-bottom:2px solid var(--accent); padding-bottom:2px; }
+
+/* Method grid */
+.method-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1.5rem; }
+@media(max-width:1000px){ .method-grid{grid-template-columns:repeat(2,1fr);} }
+@media(max-width:560px){ .method-grid{grid-template-columns:1fr;} }
+.method { border-top:3px solid var(--ink); padding-top:1.2rem; }
+.method .m-num { font-family:var(--mono); font-size:.65rem; font-weight:600; letter-spacing:.12em; color:var(--accent); margin-bottom:.6rem; }
+.method h3 { font-family:var(--display); font-weight:800; font-size:1.1rem; letter-spacing:-.015em; margin-bottom:.5rem; }
+.method p { font-size:.93rem; color:var(--steel); }
+
+/* Footer */
+footer { border-top:1px solid var(--hairline); padding:2.5rem 0 3rem; }
+.foot { display:flex; justify-content:space-between; gap:2rem; flex-wrap:wrap; }
+.foot .f-name { font-family:var(--display); font-weight:800; font-size:1rem; }
+.foot .f-sub { font-size:.88rem; color:var(--steel); margin-top:.3rem; }
+.foot .f-links { display:flex; gap:1.4rem; align-items:flex-start; }
+.foot .f-links a { font-size:.9rem; font-weight:600; text-decoration:none; }
+</style>
 </head>
-<body data-page="work">
+<body>
 
 <nav class="nav">
   <div class="nav-inner">
-    <a class="wordmark" href="index.html">
-      <span class="org-hero-logo" style="width:2rem;height:2rem;font-size:.85rem;border-radius:8px;margin:0;">A</span>
-      <span class="wm-name">Analytics Work</span>
-      <span class="wm-role">lorisca-analytics</span>
+    <a class="wordmark" href="#">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="2" y="10" width="5" height="14" rx="1.5" fill="#1e2d42"/><rect x="10.5" y="5" width="5" height="19" rx="1.5" fill="#5b7fa6"/><rect x="19" y="2" width="5" height="22" rx="1.5" fill="#4a6a8f"/></svg>
+      Analytics Work <span class="wm-tag">PORTFOLIO</span>
     </a>
     <div class="nav-links">
-      <a href="#talent">Talent Systems</a>
-      <a href="#models">Analytics &amp; Models</a>
-      <a href="#strategy-ops">Strategy &amp; Ops</a>
-      <a data-nav="main" href="https://lori-sca.github.io">Lorisca ↗</a>
+      <a href="#reading">Reading</a>
+      <a href="#projects">Projects</a>
+      <a href="#method">Method</a>
+      <a href="https://github.com/lorisca-analytics">GitHub</a>
     </div>
   </div>
 </nav>
 
-<main>
-  <section class="hero">
-    <div class="wrap">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <span class="eyebrow" id="hero-eyebrow"></span>
-          <h1 id="hero-headline"></h1>
-          <p class="lede" id="hero-lede"></p>
-          <div class="cta-row">
-            <a class="btn primary" href="https://github.com/lorisca-analytics" target="_blank" rel="noopener">The org on GitHub</a>
-            <a class="btn ghost" href="https://lori-sca.github.io">Back to main site</a>
-          </div>
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>Business problems, <em>rebuilt</em> end to end.</h1>
+        <p class="lede">I'm <strong>Lorisca</strong> — I take messy operational questions, rebuild them from raw data, and present the answer the way a manager would actually read it. This is the analytics lane of my work: <strong>every project is reproducible</strong>, the data and the method ship with it.</p>
+      </div>
+      <aside class="hero-side">
+        <div class="side-card">
+          <div class="sc-label">WHERE THE WORK LIVES</div>
+          <div class="detail-row"><span class="k">Org</span><span><a href="https://github.com/lorisca-analytics">lorisca-analytics</a></span></div>
+          <div class="detail-row"><span class="k">Lane</span><span>Operations &amp; data analytics</span></div>
+          <div class="detail-row"><span class="k">Contact</span><span><a href="mailto:loriscatuuk@gmail.com">loriscatuuk@gmail.com</a></span></div>
+          <div class="detail-row"><span class="k">Also</span><span><a href="https://lori-sca.github.io">lori-sca.github.io</a> — full personal site</span></div>
         </div>
-        <aside class="hero-side">
-          <div class="now-card">
-            <p class="nc-title">What lives here</p>
-            <div class="nc-row"><span class="k">Format</span><span class="v">Case studies: problem → approach → result, with the weak spots in the deliverable</span></div>
-            <div class="nc-row"><span class="k">Code</span><span class="v">Every study links its repo — queries, notebooks, and visuals you can rerun</span></div>
-            <div class="nc-row"><span class="k">Pipeline</span><span class="v">Titles below are real works-in-progress, not mock cards</span></div>
-          </div>
-        </aside>
+      </aside>
+    </div>
+  </div>
+</header>
+
+<section class="band" id="reading">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sh-main">
+        <div class="sh-kicker">01 — HOW I READ A PROBLEM</div>
+        <h2>Three moves, <em>every analysis.</em></h2>
+      </div>
+      <div class="sh-side">The same lens behind each project below — stated once, so the work doesn't have to explain itself twice.</div>
+    </div>
+    <div class="tim">
+      <div class="node trap">
+        <div class="t-label">TRAP</div>
+        <h3>Dashboards that impress but answer nothing.</h3>
+        <p>Most analysis starts from the data that's available and ends with a chart nobody acts on. Pretty, precise, and useless.</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node insight">
+        <div class="t-label">INSIGHT</div>
+        <h3>The obvious metric points one way. The mechanism underneath points the other.</h3>
+        <p>The first number you see is rarely the one that decides. My job is finding the mechanism hiding under it.</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node machine">
+        <div class="t-label">MACHINE</div>
+        <h3>Question first. Rebuilt from raw data. Readable in 90 seconds.</h3>
+        <p>Every project: a decision it informs, totals recomputed independently, and a working output a non-technical reader can use.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <div id="lanes"></div>
-</main>
+<section class="section" id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sh-main">
+        <div class="sh-kicker">02 — PROJECTS</div>
+        <h2>Live work. <em>No placeholders.</em></h2>
+      </div>
+      <div class="sh-side">A card appears only when the repo is live — case-study depth lives in each repo's README and dashboard, the page never duplicates it.</div>
+    </div>
+    <div class="card-grid">
+      <article class="pcard">
+        <span class="badge live">● LIVE</span>
+        <h3><a href="https://lorisca-analytics.github.io/delivery-economics-dashboard/">Delivery Economics</a></h3>
+        <p class="story"><strong>The situation:</strong> a white-glove delivery operation losing $1,156 on 13 orders. <strong>What I did:</strong> rebuilt 171 order lines into a 7-day operating model and traced every dollar. <strong>The result:</strong> labor is 92% of cost and happens inside customers' homes, where routing can't touch it — so the fix is pricing ($150 + $0.25/cu ft), not trucks. Plus the full operating system to run the day.</p>
+        <div class="metric">−23.7% margin found<span>8 of 13 customers lose money under the flat fee · bigger-truck scenario turns it to ~$508 profit</span></div>
+        <div class="links">
+          <a href="https://lorisca-analytics.github.io/delivery-economics-dashboard/">Open the case →</a>
+          <a href="https://github.com/lorisca-analytics/delivery-economics-dashboard">GitHub repo</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="method">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sh-main">
+        <div class="sh-kicker">03 — HOW IT WORKS</div>
+        <h2>One spine, <em>every project.</em></h2>
+      </div>
+      <div class="sh-side">The machinery behind the results — this is what a hiring manager is actually buying.</div>
+    </div>
+    <div class="method-grid">
+      <div class="method"><div class="m-num">M—01</div><h3>Business question first</h3><p>No analysis without a decision it informs. The finding leads; the method follows.</p></div>
+      <div class="method"><div class="m-num">M—02</div><h3>Rebuilt from raw data</h3><p>Totals recomputed independently. Assumptions stated, corrections documented — never hidden.</p></div>
+      <div class="method"><div class="m-num">M—03</div><h3>Presented for managers</h3><p>Visual, interactive, plain language. A non-technical reader gets it in 90 seconds.</p></div>
+      <div class="method"><div class="m-num">M—04</div><h3>Reproducible</h3><p>Data and scripts ship with every project. If it can't be rerun, it isn't done.</p></div>
+    </div>
+  </div>
+</section>
 
 <footer>
-  <div class="foot-inner">
-    <a class="wordmark" href="index.html"><span class="wm-name" style="font-size:1rem;">Analytics Work</span></a>
-    <span class="fine">© <span id="year"></span> Lorisca Cessia · <a href="https://lori-sca.github.io">lori-sca.github.io</a></span>
+  <div class="wrap foot">
+    <div>
+      <div class="f-name">Lorisca Tuuk</div>
+      <div class="f-sub">MBA in Analytics — the bridge between business language and technical language.</div>
+    </div>
+    <div class="f-links">
+      <a href="mailto:loriscatuuk@gmail.com">Email</a>
+      <a href="https://github.com/lorisca-analytics">GitHub org</a>
+      <a href="https://lori-sca.github.io">Personal site</a>
+    </div>
   </div>
 </footer>
 
-<script src="content.js"></script>
-<script src="site.js"></script>
-<script>
-  document.getElementById("hero-eyebrow").textContent = HERO.eyebrow;
-  document.getElementById("hero-headline").textContent = HERO.headline;
-  document.getElementById("hero-lede").textContent = HERO.lede;
-
-  const lanes = document.getElementById("lanes");
-  LANES.forEach((lane, i) => {
-    const band = document.createElement(i % 2 === 0 ? "section" : "div");
-    band.className = i % 2 === 0 ? "section" : "band";
-    band.id = lane.id;
-    const wrap = document.createElement("div");
-    wrap.className = "wrap";
-    wrap.innerHTML =
-      '<div class="section-head"><div class="sh-main">' +
-      '<span class="eyebrow">Lane ' + (i + 1) + "</span><h2></h2></div>" +
-      '<p class="sh-side"></p></div>' +
-      '<div id="lane-mount-' + lane.id + '"></div>';
-    wrap.querySelector("h2").textContent = lane.name;
-    wrap.querySelector(".sh-side").textContent = lane.blurb;
-    band.appendChild(wrap);
-    lanes.appendChild(band);
-    renderLane("lane-mount-" + lane.id, lane);
-  });
-</script>
 </body>
 </html>
