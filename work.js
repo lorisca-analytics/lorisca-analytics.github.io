@@ -113,14 +113,7 @@
         });
         detail.appendChild(cg);
       }
-      const rn = p.reviewNotes;
-      if (rn && ((rn.notes || []).length || (rn.missing || []).length)) {
-        const rb = mk("div", "w-review");
-        rb.appendChild(mk("span", "w-mono", "Review notes · hidden when published"));
-        (rn.notes || []).forEach((n) => rb.appendChild(mk("p", "", n)));
-        (rn.missing || []).forEach((m) => rb.appendChild(mk("p", "w-missing", "Missing: " + m)));
-        detail.appendChild(rb);
-      }
+      /* Review notes live in the data for the authoring workflow — never announced on the public site (Oct 2026, her call). */
       const row = mk("div", "w-row");
       const ch = chartNode(p.chart, grow); if (ch) row.appendChild(ch);
       const calls = (p.calls && p.calls.length) ? p.calls : (b.hers ? [b.hers] : []);
