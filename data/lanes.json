@@ -73,8 +73,8 @@
               },
               {
                 "label": "Business roles",
-                "value": 16255,
-                "display": "16,255",
+                "value": 13672,
+                "display": "13,672",
                 "highlight": true
               },
               {
@@ -111,22 +111,82 @@
           "id": "massachusetts-h1b-analysis",
           "title": "Massachusetts H-1B Analysis",
           "hook": "Reading the Massachusetts labor market through five years of public H-1B filing data: which employers sponsor repeatedly, and do business roles pay as well as analytics roles?",
-          "status": "draft",
+          "metric": "13,672 vs 14,035 filings · $105k vs $104k medians",
+          "visual": "https://raw.githubusercontent.com/lorisca-analytics/massachusetts-h1b-analysis/main/visuals/pay-comparison.png",
+          "visualAlt": "Median pay: business roles vs data-and-analytics roles",
+          "diagram": "https://raw.githubusercontent.com/lorisca-analytics/massachusetts-h1b-analysis/main/docs/trap-insight-machine.png",
+          "diagramAlt": "Trap, Insight, Machine: the build-post framework",
+          "status": "live",
           "links": [
             {
               "label": "Repo",
               "url": "https://github.com/lorisca-analytics/massachusetts-h1b-analysis",
               "kind": "github"
+            },
+            {
+              "label": "Video walkthrough",
+              "url": "https://www.youtube.com/watch?v=SEite--Lkh4",
+              "kind": "video"
             }
           ],
+          "body": {
+            "problem": "I'm on an F-1 visa. The job search isn't just finding the right role — it's finding an employer who'll go the full distance: OPT to STEM OPT to H-1B. I needed to know whether the business roles I'd apply to get sponsored as often, and pay as well, as the data-and-analytics roles.",
+            "approach": "Filtered 137,866 Massachusetts H-1B filings (FY2020-2024) to 123,497 certified, normalized every wage to annual, grouped roles by federal occupation code instead of keywords, and compared business vs analytics with bootstrap confidence intervals on the medians.",
+            "hers": "Caught 2,583 IT managers hiding in the business group through their occupation code — they'd inflated the business median to $115,000. Re-ran without them: $105,000. The notebook shows exactly what changed.",
+            "result": "13,672 business filings vs 14,035 analytics. $105,000 vs $104,000 median pay — statistically the same. 0% vs 100% STEM — the H-1B clock is tighter on the business side.",
+            "lesson": "Pay doesn't decide the track — the visa clock does. Same money, different runway."
+          },
+          "year": "2026",
+          "group": "mba",
+          "setting": "Solo. Python, pandas, matplotlib — one notebook, 22 cells, reproducible end to end.",
           "tools": [
-            "python",
+            "Python",
             "pandas",
-            "jupyter-notebook",
-            "matplotlib",
-            "data-analysis",
-            "h-1b"
-          ]
+            "matplotlib"
+          ],
+          "stat": {
+            "prefix": "",
+            "num": 123.5,
+            "decimals": 1,
+            "suffix": "K",
+            "label": "certified H-1B filings analyzed"
+          },
+          "context": "International graduates choose between business and analytics roles partly on which gets sponsored — and whether the pay justifies the track.",
+          "outcome": "Business roles pay effectively the same as analytics roles: $105,000 vs $104,000 median. The difference is the visa clock — 0% STEM vs 100% STEM.",
+          "calls": [
+            "Kept 32,867 exact duplicates: a repeated filing is an employer sponsoring again.",
+            "Reported medians, not means — typo'd pay units turned one $195,870 salary into $407 million.",
+            "Grouped by federal occupation code, then pulled 2,583 IT managers back out of the business group."
+          ],
+          "chart": {
+            "type": "bars",
+            "title": "From 137,866 filings to the comparison",
+            "caption": "I kept 32,867 duplicates. A repeated filing is an employer sponsoring again.",
+            "items": [
+              {
+                "label": "Raw filings",
+                "value": 137866,
+                "display": "137,866"
+              },
+              {
+                "label": "Certified, duplicates kept",
+                "value": 123497,
+                "display": "123,497"
+              },
+              {
+                "label": "Business roles",
+                "value": 13672,
+                "display": "13,672",
+                "highlight": true
+              },
+              {
+                "label": "Analytics roles",
+                "value": 14035,
+                "display": "14,035",
+                "highlight": true
+              }
+            ]
+          }
         }
       ],
       "pipeline": [
