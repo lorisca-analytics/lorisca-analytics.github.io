@@ -191,8 +191,8 @@
         {
           "id": "superstore-discount-ceiling",
           "title": "Where Should We Spend the Next Ad Dollar?",
-          "hook": "A marketing analytics lead has an ad budget and a room full of managers who\nread the business through sales volume. This dashboard makes the case for\nspending it elsewhere — and lets the room test the recommendation live.\n\nBuilt in Tableau for Hult's Data Visualization course (QTM-6032R). Graded\n100/100. What it demonstrates: turning analysis into a decision a room\ncan act on — the bridge between the technical work and the business language. Live on Tableau Public\n· Interactive dashboard",
-          "status": "draft",
+          "hook": "A marketing analytics lead has an ad budget and a room full of managers who read the business through sales volume. This dashboard makes the case for spending it elsewhere, and lets the room test the recommendation live.",
+          "status": "live",
           "links": [
             {
               "label": "Repo",
@@ -200,35 +200,34 @@
               "kind": "github"
             },
             {
-              "label": "Demo",
+              "label": "Tableau Public",
               "url": "https://public.tableau.com/app/profile/lorisca.cessia.tuuk/viz/A1_EXTRACT_v3/Story1",
+              "kind": "demo"
+            },
+            {
+              "label": "Interactive dashboard",
+              "url": "https://lorisca-analytics.github.io/superstore-discount-ceiling/dashboard/",
               "kind": "demo"
             }
           ],
           "body": {
-            "problem": "As marketing analytics lead, defend an ad budget to management.\nManagement reads the business through sales volume and wants the sub-category\npicture across the USA. Dataset: 9,994 order lines, 17 sub-categories,\n49 states, 2016–2019.",
-            "approach": "Four linked views — sales bar, sales-vs-profit scatter, discount\nladder, state map — driven by four interactions: a filter action, a hover\nhighlight, a Profit Target parameter with reference line, and a type-ahead\nhighlighter. A Discount Ceiling what-if slider was prototyped after submission\n(see methodology). A five-point Tableau Story walks the argument: what sells → selling ≠ earning → the discount cause →\nthe map proof → Fund / Fix / Stop. Colour rule throughout: blue = profit,\norange = loss, readable for red-green colour blindness.",
-            "result": "The recommendation: fund Paper (43%), Copiers (37%),\nAccessories (25%), Labels (44%), Envelopes (42%); fix pricing first on\nBinders, Storage, Chairs; stop funding Tables, Bookcases, Machines,\nSupplies. Capping discounts at 20% lifts profit 47% on its own."
+            "problem": "Budget follows sales volume. Phones sells $330K, Chairs $328K, Tables is #4. So the money goes to the biggest sellers, including one that loses $17,725.",
+            "approach": "Four linked views: sales bar, sales-vs-profit scatter, discount ladder, state map. A five-point Tableau Story walks the argument from what sells to Fund / Fix / Stop.",
+            "result": "Fund Paper, Copiers, Accessories, Labels, Envelopes. Fix pricing first on Binders, Storage, Chairs. Stop funding Tables, Bookcases, Machines, Supplies. Capping discounts at 20% lifts profit 47% on its own."
           },
           "calls": [
-            "Trap: Budget follows sales volume. Phones sells $330K, Chairs $328K, Tables\nis #4 — so the money goes to the biggest sellers, including one that loses\n$17,725.",
-            "Insight: The discount ceiling. No discount level above 20% makes money:\nat or below 20% the business earns +$422K; above 20% it loses −$135K. The\nstates confirm it independently — average discount and margin correlate at\nr = −0.98.",
-            "Machine: The ceiling as a testable number. The analysis verifies it two\nways — the discount ladder (+$422K at or below 20%, −$135K above) and the\nstate map (r = −0.98) — and a Discount Ceiling slider prototyped after\nsubmission lets a reader perform the cap instead of taking the number on\ntrust. The live workbook ships four interactions: filter, highlight, Profit\nTarget, highlighter."
+            "No discount level above 20% makes money: at or below 20% the business earns +$422K, above 20% it loses −$135K. The states confirm it independently: average discount and margin correlate at r = −0.98."
           ],
           "visual": "https://raw.githubusercontent.com/lorisca-analytics/superstore-discount-ceiling/main/assets/dashboard.png",
-          "visualAlt": "Where Should We Spend the Next Ad Dollar? — cover visual",
+          "visualAlt": "Where Should We Spend the Next Ad Dollar?: cover visual",
           "tools": [
-            "data-visualization",
-            "marketing-analytics",
-            "portfolio",
-            "tableau"
+            "Tableau"
           ],
           "reviewNotes": {
             "notes": [],
-            "missing": [
-              "Review imported copy — pulled from the repo README; trim to the 10-second version before publishing."
-            ]
-          }
+            "missing": []
+          },
+          "context": "9,994 order lines, 17 sub-categories, 49 states, 2016–2019."
         }
       ],
       "pipeline": [
@@ -237,9 +236,6 @@
         },
         {
           "title": "Where a vaccine supply strategy should point"
-        },
-        {
-          "title": "Where the next advertising dollar should go"
         },
         {
           "title": "A board bonus that looked already lost"
@@ -263,8 +259,8 @@
         {
           "id": "delivery-economics-dashboard",
           "title": "Delivery Economics",
-          "hook": "A white-glove delivery operation losing $1,156 on 13 orders — and the fix isn't routing, it's pricing. I rebuilt the whole case from 171 raw order lines: the cost model, the 7-day operating schedule, and the operating system that runs the day. The presentation, the dashboard, the operations design, and every number below are reproducible from the raw data.",
-          "status": "draft",
+          "hook": "A white-glove delivery operation losing $1,156 on 13 orders. I rebuilt the whole case from 171 raw order lines: the cost model, the 7-day operating schedule, and the operating system that runs the day.",
+          "status": "live",
           "links": [
             {
               "label": "Repo",
@@ -272,32 +268,35 @@
               "kind": "github"
             },
             {
-              "label": "Operations",
-              "url": "https://lorisca-analytics.github.io/delivery-economics-dashboard/operations.html",
+              "label": "Presentation",
+              "url": "https://lorisca-analytics.github.io/delivery-economics-dashboard/",
               "kind": "demo"
             },
             {
-              "label": "Demo",
-              "url": "https://lorisca-analytics.github.io/delivery-economics-dashboard/",
+              "label": "Dashboard",
+              "url": "https://lorisca-analytics.github.io/delivery-economics-dashboard/dashboard.html",
+              "kind": "demo"
+            },
+            {
+              "label": "Operations design",
+              "url": "https://lorisca-analytics.github.io/delivery-economics-dashboard/operations.html",
               "kind": "demo"
             }
           ],
           "body": {
-            "problem": "I was asked to optimize the operation: routes, truck loading, and the daily schedule for 13 Bay Area customers. I built the cost model from 171 raw order lines, optimized down to 7 days and 21 truckloads, and proved the loss is structural — then rebuilt the whole thing for publication with case-accurate numbers.",
-            "approach": "Objective: minimize total operational cost subject to the service promise — not distance (it only touches 8% of cost), not utilization (100% would split customer orders across days). Sequence: geographic clustering, bin-pack to the 1,700 cu ft truck without splitting orders, assign to days inside the 540-minute window. Solver demoted to a ceiling test after it returned disconnected loops. Three alternatives tested: two trucks (+$1,092, rejected), luxury pace (+$3,040 — the price tag of the promise at its extreme), bigger truck (−$1,664, the only lever that wins).",
-            "result": "$6,043 cost vs $4,887 revenue: −$1,156, −23.7% margin. Eight of thirteen customers lose money; the five smallest subsidize the rest. Recommendations: volume-based pricing at $150 + $0.25/cu ft (or +$88.94 per delivery on flat fees), the concierge rescheduling policy for no-shows, and the bigger truck as the capital lever — it flips the loss into a $508 profit.\n\nFull write-up: CASE-STUDY.md."
+            "problem": "The flat-rate promise is a brand differentiator and a money loser: one customer pays $399 for 276 cubic feet, another pays $399 for 3,970.",
+            "approach": "Geographic clustering, bin-pack to the 1,700 cu ft truck without splitting orders, assign to days inside the 540-minute window. Three alternatives tested: two trucks (+$1,092, rejected), luxury pace (+$3,040), bigger truck (−$1,664, the only lever that wins).",
+            "result": "$6,043 cost vs $4,887 revenue: −$1,156, −23.7% margin. Eight of thirteen customers lose money. Volume-based pricing at $150 + $0.25/cu ft, and the bigger truck flips the loss into a $508 profit."
           },
-          "context": "Four sources, all in data/: 171 order lines, a 45-SKU item master (volume/weight per piece), customer addresses for zone mapping, and the case-documented operating parameters. analysis/recompute.py reproduces every number on this page from those files — run it.",
+          "context": "171 order lines, a 45-SKU item master, and customer addresses for zone mapping.",
           "calls": [
-            "All 171 lines mapped with zero misses. Volume binds before weight. Three customers drive 41% of the volume. And the audit caught three contradictions in my own original files — a crew rate missing the driver premium, a mileage figure that didn't feed the fuel math, a scenario verdict contradicting its own numbers. All fixed from the primary sources; the loss moved from $808 to $1,156 and the thesis held."
+            "The audit caught three contradictions in my own original files. All fixed from the primary sources. The loss moved from $808 to $1,156 and the thesis held."
           ],
           "visual": "https://raw.githubusercontent.com/lorisca-analytics/delivery-economics-dashboard/main/docs/cover.svg",
-          "visualAlt": "Delivery Economics — cover visual",
+          "visualAlt": "Delivery Economics: cover visual",
           "reviewNotes": {
             "notes": [],
-            "missing": [
-              "Review imported copy — pulled from the repo README; trim to the 10-second version before publishing."
-            ]
+            "missing": []
           }
         }
       ],
@@ -316,9 +315,6 @@
         },
         {
           "title": "Auditing an AI transformation pitch as the person funding it"
-        },
-        {
-          "title": "A delivery loss that routing could not fix"
         },
         {
           "title": "Scoring a hardware launch before planning it"
