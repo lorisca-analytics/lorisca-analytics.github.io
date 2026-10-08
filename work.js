@@ -76,15 +76,20 @@
     const face = mk("div", "w-face");
     const meta = mk("div", "w-meta");
     meta.appendChild(mk("span", "", [p.year, p.group === "work" ? "On the job" : p.group === "mba" ? "MBA" : ""].filter(Boolean).join(" · ")));
-    meta.appendChild(mk("span", "w-badge", p.status === "live" ? "Live" : "Building"));
+    const badge = mk("span", "w-badge", p.badge || (p.status === "live" ? "Live" : p.status === "draft" ? "Draft" : "Building"));
+    if (p.status === "draft" && !p.badge) badge.classList.add("draft");
+    meta.appendChild(badge);
     face.appendChild(meta);
     if (s.big) { const b = mk("div", "w-stat"); b.appendChild(mk("span", "w-big", s.big)); if (s.label) b.appendChild(mk("span", "w-big-l", s.label)); face.appendChild(b); }
     face.appendChild(mk("h3", "w-title", p.title));
     if (p.tools && p.tools.length) { const t = mk("div", "w-chips"); p.tools.forEach((x) => t.appendChild(mk("span", "w-chip", x))); face.appendChild(t); }
     const foot = mk("div", "w-foot");
-    const hint = mk("span", "w-hint", "That's the 10-second version.");
+    const hintClosed = p.hint || "That's the 10-second version.";
+    const hint = mk("span", "w-hint", hintClosed);
+    const btnLabel = p.btnLabel || "Deep dive";
     const btn = mk("button", "w-btn"); btn.type = "button"; btn.setAttribute("aria-expanded", "false");
-    btn.innerHTML = "<span>Deep dive</span><i>+</i>";
+    btn.innerHTML = "<span></span><i>+</i>";
+    btn.querySelector("span").textContent = btnLabel;
     foot.appendChild(hint); foot.appendChild(btn); face.appendChild(foot);
     card.appendChild(face);
 
@@ -99,6 +104,23 @@
         blocks.forEach(([k, v], i) => { const d = mk("div", "w-block"); const h = mk("span", "w-mono"); h.innerHTML = "<em>" + (i + 1) + "</em>" + esc(k); d.appendChild(h); d.appendChild(mk("p", "", v)); g.appendChild(d); });
         detail.appendChild(g);
       }
+      if (p.csr && p.csr.length) {
+        const cg = mk("div", "w-csr");
+        p.csr.forEach((tile, i) => {
+          const d = mk("div", "w-csr-t"); const h = mk("span", "w-mono");
+          h.innerHTML = "<em>" + esc(String(tile.n != null ? tile.n : i + 1)) + "</em>" + esc(tile.k || "");
+          d.appendChild(h); d.appendChild(mk("p", "", tile.v || "")); cg.appendChild(d);
+        });
+        detail.appendChild(cg);
+      }
+      const rn = p.reviewNotes;
+      if (rn && ((rn.notes || []).length || (rn.missing || []).length)) {
+        const rb = mk("div", "w-review");
+        rb.appendChild(mk("span", "w-mono", "Review notes · hidden when published"));
+        (rn.notes || []).forEach((n) => rb.appendChild(mk("p", "", n)));
+        (rn.missing || []).forEach((m) => rb.appendChild(mk("p", "w-missing", "Missing: " + m)));
+        detail.appendChild(rb);
+      }
       const row = mk("div", "w-row");
       const ch = chartNode(p.chart, grow); if (ch) row.appendChild(ch);
       const calls = (p.calls && p.calls.length) ? p.calls : (b.hers ? [b.hers] : []);
@@ -108,7 +130,9 @@
       }
       if (row.children.length) detail.appendChild(row);
       if (b.lesson) detail.appendChild(mk("p", "w-lesson", b.lesson));
-      const imgs = [[p.visual, p.visualAlt], [p.diagram, p.diagramAlt]].filter((x) => x[0]);
+      const imgs = (p.images && p.images.length)
+        ? p.images.filter((im) => im && im.src).map((im) => [im.src, im.alt])
+        : [[p.visual, p.visualAlt], [p.diagram, p.diagramAlt]].filter((x) => x[0]);
       if (imgs.length) {
         const r = mk("div", "w-thumbs");
         imgs.forEach(([src, alt]) => { const t = mk("button", "w-thumb"); t.type = "button"; t.setAttribute("aria-label", alt || "Open image"); const im = document.createElement("img"); im.src = src; im.alt = alt || ""; im.loading = "lazy"; t.appendChild(im); t.addEventListener("click", () => lightbox(src, alt)); r.appendChild(t); });
@@ -130,8 +154,8 @@
     function set(open) {
       card.classList.toggle("open", open);
       btn.setAttribute("aria-expanded", open ? "true" : "false");
-      btn.querySelector("span").textContent = open ? "Close" : "Deep dive";
-      hint.textContent = open ? "Esc or Close to tuck it back" : "That's the 10-second version.";
+      btn.querySelector("span").textContent = open ? "Close" : btnLabel;
+      hint.textContent = open ? "Esc or Close to tuck it back" : hintClosed;
       if (open) { build(); requestAnimationFrame(() => setTimeout(() => grow.forEach((f) => f()), reduce ? 0 : 250)); }
     }
     card._set = set;
@@ -149,27 +173,22 @@
 
       const lanes = data.lanes || [];
       const liveOf = (l) => (l.projects || []).filter((p) => p.status === "live");
+      const draftOf = (l) => (l.projects || []).filter((p) => p.status === "draft");
+      const visibleOf = (l) => (l.projects || []).filter((p) => p.status === "live" || p.status === "draft");
       const shipped = lanes.reduce((a, l) => a + liveOf(l).length, 0);
+      const drafted = lanes.reduce((a, l) => a + draftOf(l).length, 0);
       const queued = lanes.reduce((a, l) => a + (l.pipeline || []).length, 0);
 
-      // nav: lane links + back link
-      const navLinks = document.querySelector(".nav-links");
-      if (navLinks) {
-        navLinks.innerHTML = "";
-        lanes.forEach((l) => { const a = mk("a", "", l.name); a.href = "#" + l.id; navLinks.appendChild(a); });
-        const home = mk("a", "", (page && page.backLink && page.backLink.label) || "Lorisca ↗");
-        home.dataset.nav = "main"; home.href = (page && page.backLink && page.backLink.href) || site.mainSite;
-        navLinks.appendChild(home);
-      }
-
-      // meter in the "what lives here" card
-      const ncRows = $("nc-rows");
-      if (ncRows && shipped + queued > 0) {
-        const m = mk("div", "w-meter");
-        const lab = mk("div", "w-meter-l"); lab.appendChild(mk("span", "", shipped + " shipped")); lab.appendChild(mk("span", "", queued + " in progress"));
-        const bar = mk("div", "w-meter-t"); const fill = mk("span"); bar.appendChild(fill);
-        m.appendChild(lab); m.appendChild(bar); ncRows.after(m);
-        setTimeout(() => { fill.style.width = Math.max(4, Math.round((shipped / (shipped + queued)) * 100)) + "%"; }, 300);
+      // hero totals: live / drafted / queued + segmented bar (design: live ink, draft accent)
+      const setNum = (id, v) => { const e = $(id); if (e) e.textContent = v; };
+      setNum("t-live", shipped); setNum("t-draft", drafted); setNum("t-pipe", queued);
+      const total = shipped + drafted + queued;
+      const tbL = $("tb-live"), tbD = $("tb-draft");
+      if (tbL && tbD && total > 0) {
+        setTimeout(() => {
+          if (shipped > 0) tbL.style.width = ((shipped / total) * 100) + "%";
+          if (drafted > 0) tbD.style.width = ((drafted / total) * 100) + "%";
+        }, reduce ? 0 : 300);
       }
 
       // lanes
@@ -185,12 +204,12 @@
         wrap.querySelector("h2").textContent = lane.name;
         wrap.querySelector(".sh-side").textContent = lane.blurb || "";
         const emb = embedNode(lane.embed); if (emb) wrap.querySelector(".section-head").appendChild(emb);
-        const live = liveOf(lane);
-        if (live.length) { const g = mk("div", "w-grid"); live.forEach((p) => g.appendChild(cardNode(p, onOpen))); wrap.appendChild(g); }
+        const shown = visibleOf(lane);
+        if (shown.length) { const g = mk("div", "w-grid"); shown.forEach((p) => g.appendChild(cardNode(p, onOpen))); wrap.appendChild(g); }
         const pipe = lane.pipeline || [];
         if (pipe.length) {
-          const d = mk("details", "w-pipe"); if (!live.length) d.open = true;
-          const sm = mk("summary"); sm.appendChild(mk("span", "w-pipe-h", "In the pipeline")); sm.appendChild(mk("span", "w-mono", live.length + " shipped · " + pipe.length + " in progress"));
+          const d = mk("details", "w-pipe"); if (!shown.length) d.open = true;
+          const sm = mk("summary"); sm.appendChild(mk("span", "w-pipe-h", "In the pipeline")); sm.appendChild(mk("span", "w-mono", shown.length + " shipped · " + pipe.length + " in progress"));
           d.appendChild(sm);
           const list = mk("div", "w-pipe-list");
           pipe.forEach((t, j) => {
@@ -203,17 +222,17 @@
         sec.appendChild(wrap); mount.appendChild(sec); mountSectionMedia(lane.id, lane); sections.push(sec);
       });
 
-      // filter chips in the subnav (plain anchors stay as the no-JS fallback)
-      const sub = document.querySelector(".subnav-inner");
+      // filter chips in the nav row (design: second nav row, role=tablist)
+      const sub = $("nav-chips");
       if (sub) {
-        sub.innerHTML = ""; sub.classList.add("w-chiprow");
+        sub.innerHTML = "";
         const chips = [];
         const pick = (id) => {
           chips.forEach((c) => c.classList.toggle("on", c.dataset.id === id));
           sections.forEach((s) => { s.hidden = id !== "all" && s.id !== id; });
           const t = $(id === "all" ? "top" : id); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 100, behavior: reduce ? "auto" : "smooth" });
         };
-        [["all", (page && page.subnavTop) || "All", shipped + queued]].concat(lanes.map((l) => [l.id, l.name, liveOf(l).length + (l.pipeline || []).length])).forEach(([id, label, n]) => {
+        [["all", (page && page.subnavTop) || "All", shipped + drafted + queued]].concat(lanes.map((l) => [l.id, l.name, visibleOf(l).length + (l.pipeline || []).length])).forEach(([id, label, n]) => {
           const b = mk("button", "w-chip-btn" + (id === "all" ? " on" : "")); b.type = "button"; b.dataset.id = id;
           b.appendChild(document.createTextNode(label)); b.appendChild(mk("i", "", String(n)));
           b.addEventListener("click", () => pick(id)); sub.appendChild(b); chips.push(b);
