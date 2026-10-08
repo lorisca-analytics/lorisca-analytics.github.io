@@ -377,3 +377,10 @@ section.w-lane > .wrap { padding-top: 0; padding-bottom: 0; }
    lanes and between the hero and the first lane. */
 section.w-lane { padding: clamp(1.25rem, 3vw, 2rem) 0; }
 .hero { padding-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+
+/* Lane grid: 2 lanes per row (Oct 2026, her call). Lane sections stop being
+   full-width stacked bands and become cards in a 2-column grid. */
+#lanes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; align-items: start; }
+section.w-lane { background: var(--white); border: 1px solid var(--hairline); border-radius: 14px; padding: 1.5rem; }
+section.w-lane > .wrap { padding-top: 0; padding-bottom: 0; }
+@media (max-width: 900px) { #lanes { grid-template-columns: 1fr; } }
