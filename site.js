@@ -273,6 +273,8 @@ function renderLane(mountId, lane) {
 /* ---------- data-driven pages: shared helpers ---------- */
 
 async function loadJSON(path) {
+  const pv = lcPreviewData(path);
+  if (pv) return pv;
   const r = await fetch(path);
   if (!r.ok) throw new Error("missing " + path);
   return r.json();
@@ -326,4 +328,40 @@ function embedNode(url) {
   a.appendChild(el("span", "", "&#128279;"));
   a.appendChild(el("span", "", esc(host)));
   return a;
+}
+
+/* ---------- admin live preview ----------
+   Opened as page.html?preview=1 inside the admin. The admin posts unsaved
+   JSON here; the page keeps it for this tab only and redraws from it, so
+   every section (maps, count-ups, cards) previews with its real code.
+   Nothing is saved anywhere public. Ignored on normal visits.          */
+var LC_PREVIEW = /[?&]preview=/.test(location.search);
+var LC_ADMIN_ORIGIN = "https://lori-sca.github.io";
+if (LC_PREVIEW) {
+  window.addEventListener("message", function (e) {
+    if (e.origin !== location.origin && e.origin !== LC_ADMIN_ORIGIN) return;
+    var m = e.data;
+    if (!m || m.type !== "lc-preview" || !m.files) return;
+    var changed = false;
+    Object.keys(m.files).forEach(function (path) {
+      var s = JSON.stringify(m.files[path]);
+      try {
+        if (sessionStorage.getItem("lc-preview:" + path) !== s) { sessionStorage.setItem("lc-preview:" + path, s); changed = true; }
+      } catch (err) {}
+    });
+    if (changed) {
+      try { sessionStorage.setItem("lc-preview-scroll", String(window.scrollY)); } catch (err) {}
+      location.reload();
+    }
+  });
+  window.addEventListener("load", function () {
+    var y = 0;
+    try { y = +sessionStorage.getItem("lc-preview-scroll") || 0; } catch (err) {}
+    if (y) setTimeout(function () { window.scrollTo(0, y); }, 50);
+    if (window.parent !== window) window.parent.postMessage({ type: "lc-preview-ready" }, "*");
+  });
+}
+function lcPreviewData(path) {
+  if (!LC_PREVIEW) return null;
+  try { var s = sessionStorage.getItem("lc-preview:" + path); return s ? JSON.parse(s) : null; } catch (err) { return null; }
 }

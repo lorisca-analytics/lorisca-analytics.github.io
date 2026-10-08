@@ -231,6 +231,8 @@
           b.addEventListener("click", () => pick(id)); sub.appendChild(b); chips.push(b);
         });
       }
+      // section order, hidden sections, looks and builder-added sections (admin page builder)
+      if (window.Theme && Theme.applyLayout && page && page.layout) Theme.applyLayout(document.querySelector("main"), { hero: hero, lanes: data, page: page || {} }, { site: site, layoutIn: "page" });
     })
     .catch(() => { setText("hero-headline", "Content couldn't load — try refreshing."); });
 })();

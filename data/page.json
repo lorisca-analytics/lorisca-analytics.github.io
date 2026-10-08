@@ -35,5 +35,23 @@
     ]
   },
   "laneEyebrow": "Lane",
-  "subnavTop": "All"
+  "subnavTop": "All",
+  "layout": {
+    "sections": [
+      {
+        "id": "top",
+        "type": "analytics-hero",
+        "menu": "",
+        "hidden": false,
+        "style": {}
+      },
+      {
+        "id": "lanes",
+        "type": "analytics-lanes",
+        "menu": "",
+        "hidden": false,
+        "style": {}
+      }
+    ]
+  }
 }
