@@ -83,3 +83,23 @@
 .w-status { font-size: .55rem; }
 .lightbox img { background: #fff; }
 @media (prefers-reduced-motion: reduce) { .w-card, .w-btn, .w-bar-f, .w-meter-t span { transition: none; } .w-card.open .w-detail { animation: none; } }
+
+/* ---------- Analytics Work redesign (Oct 2026) ----------
+   Design: Analytics_Work__standalone.html. Appended, never rewritten. */
+
+/* Draft badge variant (design: status pill, accent when drafted) */
+.w-badge.draft { border-color: var(--accent); color: var(--accent); }
+
+/* Context/Problem/Solution/Result numbered tiles (design: p.csr[]) */
+.w-csr { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: .7rem; }
+.w-csr-t { background: var(--mist); border-radius: 10px; padding: .85rem .95rem; }
+.w-csr-t .w-mono { color: var(--ink); margin-bottom: .35rem; }
+.w-csr-t p { margin: 0; font-size: .88rem; line-height: 1.55; }
+
+/* Review notes (design: p.reviewNotes — dashed, hidden when published) */
+.w-review { border: 1.5px dashed var(--hairline); border-radius: 10px; padding: .8rem .95rem; display: flex; flex-direction: column; gap: .3rem; }
+.w-review .w-mono { color: var(--ink); margin-bottom: .1rem; }
+.w-review p { margin: 0; font-size: .86rem; line-height: 1.5; }
+.w-missing { color: var(--steel); font-style: italic; }
+
+@media (prefers-reduced-motion: reduce) { .tb-live, .tb-draft { transition: none; } }
