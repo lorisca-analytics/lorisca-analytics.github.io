@@ -367,3 +367,8 @@ section[id], div[id] { scroll-margin-top: 104px; }
 @media (prefers-reduced-motion: reduce) {
   .tb-live, .tb-draft { transition: none; }
 }
+
+/* Tighter lane rhythm (Oct 2026, her call): lane sections floated in oceans of
+   whitespace from the global --section-pad. Neutralize it on lane sections. */
+section.w-lane { padding: clamp(2rem, 5vw, 3.5rem) 0; }
+section.w-lane > .wrap { padding-top: 0; padding-bottom: 0; }
