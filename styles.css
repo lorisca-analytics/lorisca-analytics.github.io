@@ -334,3 +334,36 @@ section[id], div[id] { scroll-margin-top: 104px; }
 .sec-media img { width: 100%; display: block; }
 .sec-media figcaption { font-size: .85rem; color: var(--steel); margin-top: .6rem; }
 .sec-links { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: 1.25rem; }
+
+/* ---------- Analytics Work redesign (Oct 2026) ----------
+   Design: Analytics_Work__standalone.html. Appended, never rewritten.
+   Tokens extracted from the design: --spring, --ease. */
+:root {
+  --spring: cubic-bezier(.34,1.56,.64,1);
+  --ease: cubic-bezier(.3,.8,.2,1);
+}
+
+/* Nav: filter chips row (design's second nav row) */
+.nav-chips { border-top: 1px solid var(--hairline); }
+.nav-chips-inner {
+  max-width: 1200px; margin: 0 auto; padding: .55rem var(--gutter);
+  display: flex; gap: .45rem; overflow-x: auto;
+}
+
+/* Hero totals: live / drafted / queued + segmented meter */
+.totals { display: flex; flex-direction: column; gap: .6rem; }
+.totals-row {
+  display: flex; justify-content: space-between; gap: .8rem;
+  font-family: var(--mono); font-size: .62rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--steel);
+}
+.totals-row b { color: var(--ink); font-weight: 600; }
+.totals-bar { display: flex; height: 8px; border-radius: 999px; background: var(--mist-deep); overflow: hidden; }
+.totals-bar span { display: block; height: 100%; width: 0; }
+.tb-live { background: var(--ink); transition: width 1100ms var(--ease); }
+.tb-draft { background: var(--accent); transition: width 1100ms var(--ease) 150ms; }
+.hero-side .cta-row { margin-top: 1rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tb-live, .tb-draft { transition: none; }
+}
