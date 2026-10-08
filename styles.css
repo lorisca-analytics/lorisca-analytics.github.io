@@ -372,3 +372,8 @@ section[id], div[id] { scroll-margin-top: 104px; }
    whitespace from the global --section-pad. Neutralize it on lane sections. */
 section.w-lane { padding: clamp(2rem, 5vw, 3.5rem) 0; }
 section.w-lane > .wrap { padding-top: 0; padding-bottom: 0; }
+
+/* Tighter rhythm, round 2 (Oct 2026, her call): still too much air between
+   lanes and between the hero and the first lane. */
+section.w-lane { padding: clamp(1.25rem, 3vw, 2rem) 0; }
+.hero { padding-bottom: clamp(1.5rem, 3vw, 2.5rem); }
