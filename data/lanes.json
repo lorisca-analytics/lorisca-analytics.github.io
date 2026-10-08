@@ -106,7 +106,29 @@
       "id": "models",
       "name": "Analytics & Models",
       "blurb": "SQL, machine learning, and BI — built to support one decision, with limits stated.",
-      "projects": [],
+      "projects": [
+        {
+          "id": "massachusetts-h1b-analysis",
+          "title": "Massachusetts H-1B Analysis",
+          "hook": "Reading the Massachusetts labor market through five years of public H-1B filing data: which employers sponsor repeatedly, and do business roles pay as well as analytics roles?",
+          "status": "draft",
+          "links": [
+            {
+              "label": "Repo",
+              "url": "https://github.com/lorisca-analytics/massachusetts-h1b-analysis",
+              "kind": "github"
+            }
+          ],
+          "tools": [
+            "python",
+            "pandas",
+            "jupyter-notebook",
+            "matplotlib",
+            "data-analysis",
+            "h-1b"
+          ]
+        }
+      ],
       "pipeline": [
         {
           "title": "Predicting income bracket, and knowing when to stop"
