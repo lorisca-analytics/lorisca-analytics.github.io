@@ -234,7 +234,7 @@
         };
         [["all", (page && page.subnavTop) || "All", shipped + drafted + queued]].concat(lanes.map((l) => [l.id, l.name, visibleOf(l).length + (l.pipeline || []).length])).forEach(([id, label, n]) => {
           const b = mk("button", "w-chip-btn" + (id === "all" ? " on" : "")); b.type = "button"; b.dataset.id = id;
-          b.appendChild(document.createTextNode(label)); b.appendChild(mk("i", "", String(n)));
+          b.appendChild(document.createTextNode(label)); if (id !== "all") b.appendChild(mk("i", "", String(n)));
           b.addEventListener("click", () => pick(id)); sub.appendChild(b); chips.push(b);
         });
       }
