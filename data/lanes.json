@@ -298,6 +298,35 @@
             "notes": [],
             "missing": []
           }
+        },
+        {
+          "id": "bike-venture-turnaround",
+          "title": "The Bounce-Back",
+          "hook": "A marketing performance audit that pulled a team out of a Q3 collapse and back to profitability by Q6.",
+          "status": "hidden",
+          "links": [
+            {
+              "label": "Repo",
+              "url": "https://github.com/lorisca-analytics/bike-venture-turnaround",
+              "kind": "github"
+            }
+          ],
+          "body": {
+            "problem": "Our team launched an international bike company, placed second after Q1, then collapsed in Q3: zero paid search, 78% of orders unfulfilled, fragmented messaging, and the quarter's worst loss (-$360K operating profit).",
+            "approach": "A diagnostic audit: benchmark every marketing dimension against the market, decompose losses by segment, trace each failure to an organizational root cause, then size a corrective plan with targets.",
+            "result": "Operating profit went from -$360K (Q3) to nearly breakeven in Q4 (-$20K) to +$703K in Q6. Revenue grew 13x off the Q3 trough."
+          },
+          "context": "Built from six quarters of a Harvard Business Publishing venture strategy simulation, where I served as VP of Business Analytics and HR.",
+          "calls": [
+            "One honest complication: Q5 shows a -$717K loss. That's not a relapse. It's a deliberate $860K R&D investment while revenue kept climbing.",
+            "The turnaround is a profit story inside a share-loss market, which is the more interesting finding and the one a hiring manager can actually interrogate."
+          ],
+          "visual": "https://raw.githubusercontent.com/lorisca-analytics/bike-venture-turnaround/main/charts/chart1_profit_turnaround.png",
+          "visualAlt": "Operating profit by quarter",
+          "reviewNotes": {
+            "notes": [],
+            "missing": []
+          }
         }
       ],
       "pipeline": [
