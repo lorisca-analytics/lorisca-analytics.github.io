@@ -8,7 +8,7 @@
         {
           "id": "h1b-sponsorship",
           "title": "Which Employers Reliably Sponsor H-1B Business Roles",
-          "hook": "SQL analysis of 3.47M H-1B filings (2020–2023). The business-role wage premium survives on medians — then breaks honestly when IT managers are excluded.",
+          "hook": "SQL analysis of 3.47M H-1B filings (2020–2023). The business-role wage premium survives on medians, then flips when IT managers are excluded.",
           "metric": "3.47M filings · 8 queries",
           "visual": "https://raw.githubusercontent.com/lorisca-analytics/h1b-sponsorship-sql-analysis/main/visuals/02-wage-premium-by-year.png",
           "visualAlt": "Wage premium by year, business vs data roles",
@@ -23,10 +23,10 @@
             }
           ],
           "body": {
-            "problem": "International graduates pick a track first and ask about visa risk later — on anecdote. Nobody could say whether business and analytics tracks differ on approval odds, or which employers sponsor every year rather than once.",
+            "problem": "International graduates pick a track first and ask about visa risk later, on anecdote. Nobody could say whether business and analytics tracks differ on approval odds, or which employers sponsor every year rather than once.",
             "approach": "Normalized 3.47M federal filings into a five-table MySQL database, then ran eight queries on volume, approval, pay, and four-year employer durability.",
-            "hers": "Reported the median that broke my own headline finding — the premium flips when IT managers are excluded.",
-            "result": "Approval gap never passed 1.7 points. Business volume +9.1% while analytics fell 6.1%. 77 durable business sponsors identified — EY leads with 13,329 filings at 97.8%.",
+            "hers": "Reported the median that broke my own headline finding: the premium flips when IT managers are excluded.",
+            "result": "Approval gap never passed 1.7 points. Business volume +9.1% while analytics fell 6.1%. 77 durable business sponsors identified. EY leads with 13,329 filings at 97.8%.",
             "lesson": "Visa risk is the wrong variable. The decision turns on market direction and pay, not approval odds."
           },
           "year": "2026",
@@ -69,6 +69,22 @@
                 "highlight": false
               }
             ]
+          },
+          "trace": {
+            "problem": "Visa risk judged on anecdote",
+            "move": "3.47M filings in a five-table MySQL database",
+            "result": "Approval gap never passed 1.7 points"
+          },
+          "cardVisual": {
+            "kind": "bars",
+            "label": "Employers that sponsored every year, 2020–2023",
+            "aLabel": "Data and analytics",
+            "aValue": 619,
+            "aText": "619",
+            "bLabel": "Business roles",
+            "bValue": 77,
+            "bText": "77",
+            "big": "77"
           }
         }
       ],
@@ -90,7 +106,7 @@
     {
       "id": "models",
       "name": "Analytics & Models",
-      "blurb": "SQL, machine learning, and BI — built to support one decision, with limits stated.",
+      "blurb": "SQL, machine learning, and BI built to support one decision, with limits stated.",
       "projects": [
         {
           "id": "massachusetts-h1b-analysis",
@@ -115,15 +131,15 @@
             }
           ],
           "body": {
-            "problem": "I'm on an F-1 visa. The job search isn't just finding the right role — it's finding an employer who'll go the full distance: OPT to STEM OPT to H-1B. I needed to know whether the business roles I'd apply to get sponsored as often, and pay as well, as the data-and-analytics roles.",
+            "problem": "I'm on an F-1 visa. The job search means finding the right role and an employer who'll go the full distance: OPT to STEM OPT to H-1B. I needed to know whether the business roles I'd apply to get sponsored as often, and pay as well, as the data-and-analytics roles.",
             "approach": "Filtered 137,866 Massachusetts H-1B filings (FY2020-2024) to 123,497 certified, normalized every wage to annual, grouped roles by federal occupation code instead of keywords, and compared business vs analytics with bootstrap confidence intervals on the medians.",
-            "hers": "Caught 2,583 IT managers hiding in the business group through their occupation code — they'd inflated the business median to $115,000. Re-ran without them: $105,000. The notebook shows exactly what changed.",
-            "result": "13,672 business filings vs 14,035 analytics. $105,000 vs $104,000 median pay — statistically the same. 0% vs 100% STEM — the H-1B clock is tighter on the business side.",
-            "lesson": "Pay doesn't decide the track — the visa clock does. Same money, different runway."
+            "hers": "Caught 2,583 IT managers hiding in the business group through their occupation code. They'd inflated the business median to $115,000. Re-ran without them: $105,000. The notebook shows exactly what changed.",
+            "result": "13,672 business filings vs 14,035 analytics. $105,000 vs $104,000 median pay, statistically the same. 0% vs 100% STEM: the H-1B clock is tighter on the business side.",
+            "lesson": "The visa clock decides the track. Same money, different runway."
           },
           "year": "2026",
           "group": "mba",
-          "setting": "Solo. Python, pandas, matplotlib — one notebook, 22 cells, reproducible end to end.",
+          "setting": "Solo. Python, pandas, matplotlib. One notebook, 22 cells, reproducible end to end.",
           "tools": [
             "Python",
             "pandas",
@@ -136,11 +152,11 @@
             "suffix": "K",
             "label": "certified H-1B filings analyzed"
           },
-          "context": "International graduates choose between business and analytics roles partly on which gets sponsored — and whether the pay justifies the track.",
-          "outcome": "Business roles pay effectively the same as analytics roles: $105,000 vs $104,000 median. The difference is the visa clock — 0% STEM vs 100% STEM.",
+          "context": "International graduates choose between business and analytics roles partly on which gets sponsored, and whether the pay justifies the track.",
+          "outcome": "Business roles pay effectively the same as analytics roles: $105,000 vs $104,000 median. The difference is the visa clock: 0% STEM vs 100% STEM.",
           "calls": [
             "Kept 32,867 exact duplicates: a repeated filing is an employer sponsoring again.",
-            "Reported medians, not means — typo'd pay units turned one $195,870 salary into $407 million.",
+            "Reported medians, not means. Typo'd pay units turned one $195,870 salary into $407 million.",
             "Grouped by federal occupation code, then pulled 2,583 IT managers back out of the business group."
           ],
           "chart": {
@@ -171,6 +187,22 @@
                 "highlight": true
               }
             ]
+          },
+          "trace": {
+            "problem": "Business or analytics track?",
+            "move": "Roles grouped by federal occupation code",
+            "result": "$105K vs $104K median pay"
+          },
+          "cardVisual": {
+            "kind": "bars",
+            "label": "Median pay, certified filings",
+            "aLabel": "Analytics roles",
+            "aValue": 104000,
+            "aText": "$104,000",
+            "bLabel": "Business roles",
+            "bValue": 105000,
+            "bText": "$105,000",
+            "big": "Same pay"
           }
         },
         {
@@ -213,7 +245,23 @@
             "notes": [],
             "missing": []
           },
-          "context": "9,994 order lines, 17 sub-categories, 49 states, 2016–2019."
+          "context": "9,994 order lines, 17 sub-categories, 49 states, 2016–2019.",
+          "trace": {
+            "problem": "Budget follows sales volume",
+            "move": "Four linked views and a Tableau Story",
+            "result": "Capping discounts at 20% lifts profit 47%"
+          },
+          "cardVisual": {
+            "kind": "swing",
+            "label": "Profit by discount level",
+            "aLabel": "Above 20%",
+            "aValue": -135,
+            "aText": "−$135K",
+            "bLabel": "20% or less",
+            "bValue": 422,
+            "bText": "+$422K",
+            "big": "+47%"
+          }
         }
       ],
       "pipeline": [
@@ -240,7 +288,7 @@
     {
       "id": "strategy-ops",
       "name": "Strategy & Operations",
-      "blurb": "Business cases, pricing, and delivery — the numbers behind the story.",
+      "blurb": "Business cases, pricing, and delivery: the numbers behind the story.",
       "projects": [
         {
           "id": "delivery-economics-dashboard",
@@ -284,6 +332,22 @@
           "reviewNotes": {
             "notes": [],
             "missing": []
+          },
+          "trace": {
+            "problem": "$399 flat rate for 276 or 3,970 cu ft",
+            "move": "Cost model and a 7-day schedule",
+            "result": "A $1,156 loss flips to a $508 profit"
+          },
+          "cardVisual": {
+            "kind": "swing",
+            "label": "Profit on 13 orders",
+            "aLabel": "Flat rate today",
+            "aValue": -1156,
+            "aText": "−$1,156",
+            "bLabel": "Volume pricing, bigger truck",
+            "bValue": 508,
+            "bText": "+$508",
+            "big": "+$508"
           }
         },
         {
@@ -314,6 +378,22 @@
           "reviewNotes": {
             "notes": [],
             "missing": []
+          },
+          "trace": {
+            "problem": "−$360K operating profit in Q3",
+            "move": "Diagnostic audit of every marketing dimension",
+            "result": "+$703K operating profit in Q6"
+          },
+          "cardVisual": {
+            "kind": "swing",
+            "label": "Operating profit",
+            "aLabel": "Q3",
+            "aValue": -360,
+            "aText": "−$360K",
+            "bLabel": "Q6",
+            "bValue": 703,
+            "bText": "+$703K",
+            "big": "+$703K"
           }
         }
       ],
@@ -344,14 +424,14 @@
     {
       "id": "consulting",
       "name": "Consulting",
-      "blurb": "Live-client engagements — real stakeholders, real constraints. Team-based consulting work with deliverables, distinct from solo analyses.",
+      "blurb": "Live-client engagements with real stakeholders and real constraints. Team-based consulting work with deliverables, distinct from solo analyses.",
       "projects": [],
       "pipeline": [
         {
-          "title": "M&T Bank — live-client engagement (D1–D6 deliverables)"
+          "title": "M&T Bank: live-client engagement (D1–D6 deliverables)"
         },
         {
-          "title": "Autodesk AutoProc — LATAM procurement strategy"
+          "title": "Autodesk AutoProc: LATAM procurement strategy"
         }
       ]
     }

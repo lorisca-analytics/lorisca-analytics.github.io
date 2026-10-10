@@ -1,98 +1,128 @@
-/* rows.js: Analytics Work hub renderer, Builds-style rows.
-   Same data and page logic as work.js (site.json, hero.json, lanes.json, page.json).
-   Only the card changed: one full-width row per case, thumbnail on the front,
-   and a step-by-step walkthrough instead of the open-all detail panel.
+/* rows.js: Work hub renderer (redesign thread 3, Oct 2026).
+   One wide card per row, the shared card from main shared.css (wc-, ds-).
+   Each card: label, title, hook, the problem > move > result line (`trace`),
+   a picture drawn from the color tokens (`cardVisual`), and a Deep dive that
+   opens a step-by-step walkthrough inside the card.
+   Public page shows live cards only. A group with no live card is hidden.
+   Pipeline titles show only when page.json `showPipeline` is true.
    Every field is optional, so old JSON still renders. Needs site.js first
    (loadJSON, applyOrgChrome, renderOrgPage, mountSectionMedia, embedNode, setText).
-   No server, no build step. Card classes start with r- (rows.css), charts reuse w- (work.css). */
+   Plain JS, no build step. Page classes start with wk- (rows.css). */
 (function () {
   const $ = (id) => document.getElementById(id);
   const mk = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  const fmt = (n, d) => Number(n).toLocaleString("en-US", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });
+  const has = (v) => v != null && String(v).trim() !== "";
+  const num = (v) => { const n = parseFloat(v); return isNaN(n) ? null : n; };
+  const fmt = (n) => Number(n).toLocaleString("en-US");
   const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const isSvg = (s) => /\.svg(\?|#|$)/i.test(s || "");
-  const LANE_LIMIT = 3; // a lane with more cards shows the first 3 plus "Show all"
 
   /* ---------- lightbox ---------- */
   function lightbox(src, alt) {
-    const lb = mk("div", "r-lightbox");
+    const lb = mk("div", "wk-lightbox");
     lb.setAttribute("role", "dialog"); lb.setAttribute("aria-label", alt || "Image");
     const img = document.createElement("img"); img.src = src; img.alt = alt || "";
     lb.appendChild(img);
-    if (alt) lb.appendChild(mk("p", "r-lb-cap", alt));
+    if (alt) lb.appendChild(mk("p", "wk-lb-cap", alt));
     const close = () => { lb.remove(); document.removeEventListener("keydown", onKey, true); };
     const onKey = (e) => { if (e.key === "Escape") { e.stopPropagation(); close(); } };
     lb.addEventListener("click", close); document.addEventListener("keydown", onKey, true);
     document.body.appendChild(lb);
   }
-
   function imgNode(src, alt, cls) {
     const im = document.createElement("img");
     im.src = src; im.alt = alt || ""; im.loading = "lazy";
     im.className = (cls || "") + (isSvg(src) ? " svg" : "");
     return im;
   }
-
-  function linkRow(p, cls) {
-    const row = mk("div", cls || "r-links");
-    (p.links || []).filter((l) => l && l.url).forEach((l) => {
-      const demo = l.kind === "demo";
-      const a = mk("a", "r-link" + (demo ? " demo" : ""), (l.label || "Link") + (demo ? " ↗" : " →"));
-      a.href = l.url; a.target = "_blank"; a.rel = "noopener"; row.appendChild(a);
-    });
-    return row;
+  function btn(label, href, dark, ext) {
+    const a = mk("a", "ds-btn " + (dark ? "ds-btn-dark" : "ds-btn-line"), label);
+    a.href = href; if (ext) { a.target = "_blank"; a.rel = "noopener"; }
+    return a;
   }
 
-  /* ---------- charts (optional `chart` on a project), same as work.js ---------- */
-  function chartNode(c, grow) {
-    if (!c || !c.type) return null;
-    const box = mk("div", "w-chart");
-    if (c.title) box.appendChild(mk("p", "w-chart-title", c.title));
-    if (c.type === "bars" && c.items && c.items.length) {
-      const max = Math.max(...c.items.map((i) => Math.abs(i.value || 0))) || 1;
-      c.items.forEach((it, i) => {
-        const row = mk("div", "w-bar" + (it.highlight ? " hl" : ""));
-        row.appendChild(mk("span", "w-bar-l", it.label));
-        const track = mk("span", "w-bar-t"); const fill = mk("span", "w-bar-f");
-        fill.style.transitionDelay = i * 80 + "ms"; track.appendChild(fill);
-        const wrap = mk("span", "w-bar-w"); wrap.appendChild(track); wrap.appendChild(mk("span", "w-bar-v", it.display || fmt(it.value)));
-        row.appendChild(wrap); box.appendChild(row);
-        grow.push(() => { fill.style.width = ((Math.abs(it.value || 0) / max) * 100).toFixed(1) + "%"; });
-      });
-    } else if (c.type === "compare" && c.left && c.right) {
-      const g = mk("div", "w-compare");
-      [c.left, c.right].forEach((sd, i) => {
-        const s = mk("div", "w-side" + (i ? " after" : ""));
-        s.appendChild(mk("span", "w-mono", sd.label || ""));
-        (sd.points || []).forEach((pt) => s.appendChild(mk("p", "", pt)));
-        g.appendChild(s);
-      });
-      box.appendChild(g);
-    } else if (c.type === "hub") {
-      const chips = (arr, cls) => { const r = mk("div", "w-chips"); (arr || []).forEach((t) => r.appendChild(mk("span", cls, t))); return r; };
-      box.appendChild(chips(c.inputs, "w-chip"));
-      box.appendChild(mk("span", "w-arrow", "↓"));
-      box.appendChild(mk("span", "w-hub", c.hub || ""));
-      box.appendChild(mk("span", "w-arrow", "↓"));
-      box.appendChild(chips(c.outputs, "w-chip out"));
-    } else if (c.type === "steps" && c.items) {
-      c.items.forEach((st, i) => {
-        const r = mk("div", "w-step" + (st.highlight ? " hl" : ""));
-        r.appendChild(mk("span", "w-mono", String(i + 1).padStart(2, "0")));
-        const t = mk("span"); t.appendChild(mk("b", "", st.label || "")); if (st.note) t.appendChild(mk("small", "", st.note));
-        r.appendChild(t); box.appendChild(r);
-      });
+  /* ---------- card picture, drawn from tokens (same rules as Home's visual()) ---------- */
+  function barRow(label, text, bar) {
+    const row = mk("div", "wc-bar-row"), lab = mk("span", "ds-label");
+    lab.appendChild(mk("span", "", label || "")); lab.appendChild(mk("span", "", text || ""));
+    row.appendChild(lab); row.appendChild(bar);
+    return row;
+  }
+  function picture(p) {
+    const box = mk("div", "wc-visual");
+    const v = p.cardVisual || {};
+    const kind = v.kind || "";
+    const a = num(v.aValue), b = num(v.bValue);
+    if (kind) {
+      box.setAttribute("aria-hidden", "true");
+      if (has(v.label)) box.appendChild(mk("span", "ds-label", v.label));
+      if (kind === "swing" && a != null && b != null && a < 0 && b > 0) {
+        const total = Math.abs(a) + b, zero = (Math.abs(a) / total * 100).toFixed(1) + "%";
+        const wrap = mk("div", "wc-bars"), t1 = mk("div", "wc-track"), t2 = mk("div", "wc-track");
+        t1.style.setProperty("--zero", zero); t2.style.setProperty("--zero", zero);
+        const neg = mk("div", "wc-bar"); neg.style.left = "0"; neg.style.width = zero; t1.appendChild(neg);
+        const pos = mk("div", "wc-bar after"); pos.style.left = zero; pos.style.width = (b / total * 100).toFixed(1) + "%"; t2.appendChild(pos);
+        wrap.appendChild(barRow(v.aLabel, v.aText || fmt(a), t1));
+        wrap.appendChild(barRow(v.bLabel, v.bText || fmt(b), t2));
+        const z = mk("div", "wc-zero ds-label"); z.style.setProperty("--zero", zero); z.appendChild(mk("span", "", "$0")); wrap.appendChild(z);
+        box.appendChild(wrap);
+      } else if ((kind === "bars" || kind === "swing") && a != null && b != null) {
+        const max = Math.max(Math.abs(a), Math.abs(b)) || 1, bars = mk("div", "wc-bars");
+        const b1 = mk("div", "wc-bar"); b1.style.width = (Math.abs(a) / max * 100).toFixed(1) + "%";
+        const b2 = mk("div", "wc-bar after"); b2.style.width = (Math.abs(b) / max * 100).toFixed(1) + "%";
+        bars.appendChild(barRow(v.aLabel, v.aText || fmt(a), b1));
+        bars.appendChild(barRow(v.bLabel, v.bText || fmt(b), b2));
+        box.appendChild(bars);
+      }
+      if (has(v.big)) box.appendChild(mk("span", "wc-big" + (String(v.big).length > 9 ? " sm" : ""), v.big));
+      return box;
     }
-    if (c.caption) box.appendChild(mk("p", "w-caption", c.caption));
+    /* no drawn picture yet (a newly synced card): show the cover picture, else the metric line */
+    const src = p.visual || (p.images && p.images[0] && p.images[0].src) || p.diagram;
+    if (src) {
+      const alt = p.visual ? p.visualAlt : (p.images && p.images[0] && p.images[0].src) ? p.images[0].alt : p.diagramAlt;
+      const th = mk("button", "wk-cover"); th.type = "button";
+      th.setAttribute("aria-label", "Enlarge: " + (alt || p.title || "picture"));
+      th.appendChild(imgNode(src, alt || p.title));
+      th.addEventListener("click", () => lightbox(src, alt || p.title));
+      box.classList.add("has-cover"); box.appendChild(th);
+      return box;
+    }
+    box.setAttribute("aria-hidden", "true");
+    if (has(p.metric)) box.appendChild(mk("span", "wc-big sm", p.metric));
     return box;
   }
 
-  /* ---------- the walkthrough steps, built from the data ----------
-     Leads with the finding when `outcome` exists. Thinking process uses `calls`,
-     falling back to My call (`hers`), same rule as work.js. CSR tiles become steps too. */
+  /* ---------- deep dive charts (optional `chart` on a project) ---------- */
+  function chartNode(c) {
+    if (!c || !c.type) return null;
+    const box = mk("div", "wk-chart");
+    if (c.title) box.appendChild(mk("p", "wk-chart-title", c.title));
+    if (c.type === "bars" && c.items && c.items.length) {
+      const max = Math.max(...c.items.map((i) => Math.abs(i.value || 0))) || 1, bars = mk("div", "wc-bars");
+      c.items.forEach((it) => {
+        const bar = mk("div", "wc-bar" + (it.highlight ? " after" : ""));
+        bar.style.width = ((Math.abs(it.value || 0) / max) * 100).toFixed(1) + "%";
+        bars.appendChild(barRow(it.label, it.display || fmt(it.value), bar));
+      });
+      box.appendChild(bars);
+    } else if (c.type === "compare" && c.left && c.right) {
+      const g = mk("div", "wk-compare");
+      [c.left, c.right].forEach((sd) => { const s = mk("div"); s.appendChild(mk("span", "ds-label", sd.label || "")); (sd.points || []).forEach((pt) => s.appendChild(mk("p", "", pt))); g.appendChild(s); });
+      box.appendChild(g);
+    } else if (c.type === "steps" && c.items) {
+      const ol = mk("ol", "wk-steps"); c.items.forEach((st) => { const li = mk("li"); li.appendChild(mk("b", "", st.label || "")); if (st.note) li.appendChild(mk("span", "", st.note)); ol.appendChild(li); });
+      box.appendChild(ol);
+    } else if (c.type === "hub") {
+      box.appendChild(mk("p", "", [(c.inputs || []).join(", "), c.hub, (c.outputs || []).join(", ")].filter(Boolean).join(" → ")));
+    }
+    if (c.caption) box.appendChild(mk("p", "wk-chart-cap", c.caption));
+    return box;
+  }
+
+  /* ---------- walkthrough steps, same order as before ---------- */
   function stepsOf(p) {
-    const b = p.body || {};
-    const out = [];
+    const b = p.body || {}, out = [];
     const add = (k, v, kind) => { if (v && (!Array.isArray(v) || v.length)) out.push({ k, v, kind: kind || "text" }); };
     if (p.outcome && p.outcome !== p.hook) add("The finding", p.outcome);
     add("Context", p.context);
@@ -106,102 +136,96 @@
     return out;
   }
 
-  /* ---------- one row ---------- */
-  function cardNode(p, n, ctl) {
+  /* ---------- one card ---------- */
+  function cardNode(p, ctl) {
     const steps = stepsOf(p);
-    const card = mk("article", "r-card" + (n % 2 ? " flip" : "")); card.id = "card-" + p.id;
-    const num = String(n + 1).padStart(2, "0");
-    const thumbSrc = p.visual || (p.images && p.images[0] && p.images[0].src) || p.diagram;
-    const thumbAlt = p.visual ? p.visualAlt : (p.images && p.images[0] && p.images[0].src) ? p.images[0].alt : p.diagramAlt;
-
-    const head = mk("div", "r-head");
-    if (thumbSrc) {
-      const th = mk("button", "r-thumb"); th.type = "button";
-      th.setAttribute("aria-label", "Enlarge: " + (thumbAlt || p.title));
-      const ti = imgNode(thumbSrc, thumbAlt || p.title); if (n < 4) ti.loading = "eager"; th.appendChild(ti);
-      th.appendChild(mk("span", "r-num", num));
-      th.addEventListener("click", () => lightbox(thumbSrc, thumbAlt || p.title));
-      head.appendChild(th);
-    } else head.classList.add("no-thumb");
-
-    const copy = mk("div", "r-copy");
-    const meta = mk("div", "r-meta");
-    meta.appendChild(mk("span", "", p.metric || (p.year ? String(p.year) : "")));
-    const badge = mk("span", "r-badge", p.badge || (p.status === "live" ? "Live" : p.status === "draft" ? "Draft" : "Building"));
-    if (p.status === "draft" && !p.badge) badge.classList.add("draft");
-    meta.appendChild(badge);
-    copy.appendChild(meta);
-    copy.appendChild(mk("h3", "r-title", p.title || ""));
-    if (p.hook) copy.appendChild(mk("p", "r-hook", p.hook));
-    if (p.tools && p.tools.length) { const t = mk("div", "r-chips"); p.tools.forEach((x) => t.appendChild(mk("span", "r-chip", x))); copy.appendChild(t); }
-    const foot = mk("div", "r-foot");
-    foot.appendChild(linkRow(p));
-    const btnLabel = p.btnLabel || "Deep dive";
-    let btn = null;
-    if (steps.length) {
-      btn = mk("button", "r-btn"); btn.type = "button";
-      btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "walk-" + p.id);
-      btn.innerHTML = "<span></span><i>+</i>"; btn.querySelector("span").textContent = btnLabel;
-      if (p.hint) btn.title = p.hint;
-      btn.addEventListener("click", () => ctl.toggle(card));
-      foot.appendChild(btn);
+    const card = mk("article", "wc wk-card"); card.id = "card-" + p.id;
+    const body = mk("div", "wc-body");
+    if (has(p.metric)) body.appendChild(mk("span", "ds-label", p.metric));
+    body.appendChild(mk("h3", "wc-title", p.title || ""));
+    if (has(p.hook)) body.appendChild(mk("p", "wc-sum", p.hook));
+    const t = p.trace || {};
+    if (has(t.problem) || has(t.move) || has(t.result)) {
+      const ol = mk("ol", "wc-trace"); ol.setAttribute("aria-label", "Problem, move and result");
+      [["Problem", t.problem], ["Move", t.move], ["Result", t.result]].forEach((x) => {
+        const li = mk("li"); li.appendChild(mk("span", "ds-label", x[0])); li.appendChild(mk("span", "", x[1] || "")); ol.appendChild(li);
+      });
+      body.appendChild(ol);
     }
-    copy.appendChild(foot);
-    head.appendChild(copy);
-    card.appendChild(head);
+    const foot = mk("div", "wc-foot");
+    const label = p.btnLabel || "Deep dive";
+    let dd = null;
+    if (steps.length) {
+      dd = mk("button", "ds-btn ds-btn-dark wk-dd"); dd.type = "button";
+      dd.setAttribute("aria-expanded", "false"); dd.setAttribute("aria-controls", "walk-" + p.id);
+      dd.appendChild(mk("span", "", label)); dd.appendChild(mk("i", "", "+"));
+      if (p.hint) dd.title = p.hint;
+      dd.addEventListener("click", () => ctl.toggle(card));
+      foot.appendChild(dd);
+    }
+    const links = (p.links || []).filter((l) => l && l.url);
+    const repo = links.filter((l) => l.kind === "github")[0];
+    if (repo) foot.appendChild(btn(repo.label || "Repo", repo.url, false, true));
+    const more = links.length - (repo ? 1 : 0);
+    if (more > 0 && steps.length) foot.appendChild(mk("span", "wc-note", more === 1 ? "1 more link in the deep dive" : more + " more links in the deep dive"));
+    else if (p.tools && p.tools.length) foot.appendChild(mk("span", "wc-note", p.tools.join(", ")));
+    if (!steps.length) links.filter((l) => l !== repo).forEach((l) => foot.appendChild(btn(l.label || "Link", l.url, false, true)));
+    if (foot.children.length) body.appendChild(foot);
+    card.appendChild(body);
+    card.appendChild(picture(p));
     if (!steps.length) return card;
 
     /* walkthrough: built on first open */
-    const walk = mk("div", "r-walk"); walk.id = "walk-" + p.id;
-    let built = false, step = 0, fig, media, chartBox, cap, counter, h, body, endBox, dots, back, next;
-    const grow = []; let grown = false;
-    const vis = p.visual ? [p.visual, p.visualAlt] : thumbSrc ? [thumbSrc, thumbAlt] : null;
+    const walk = mk("div", "wk-walk"); walk.id = "walk-" + p.id; walk.hidden = true;
+    const vis = p.visual ? [p.visual, p.visualAlt] : (p.images && p.images[0] && p.images[0].src) ? [p.images[0].src, p.images[0].alt] : null;
     const dia = p.diagram ? [p.diagram, p.diagramAlt] : null;
-    let curImg = null;
+    let built = false, step = 0, media, chartBox, cap, counter, h, text, endBox, dots, back, next, curImg = null;
 
     function build() {
       if (built) return; built = true;
-      fig = mk("div", "r-fig");
-      media = mk("button", "r-media"); media.type = "button";
-      media.appendChild(mk("span", "r-zoom", "Enlarge ⤢"));
+      const fig = mk("div", "wk-fig");
+      media = mk("button", "wk-media"); media.type = "button";
+      media.appendChild(mk("span", "wk-zoom", "Enlarge"));
       media.addEventListener("click", () => { if (curImg) lightbox(curImg[0], curImg[1]); });
       fig.appendChild(media);
-      chartBox = chartNode(p.chart, grow);
-      if (chartBox) { chartBox.classList.add("r-chart"); fig.appendChild(chartBox); }
-      cap = mk("p", "r-cap"); fig.appendChild(cap);
-      if (vis || dia || chartBox) walk.appendChild(fig); else walk.classList.add("no-media");
+      chartBox = chartNode(p.chart);
+      if (chartBox) fig.appendChild(chartBox);
+      cap = mk("p", "wk-cap"); fig.appendChild(cap);
+      if (vis || dia || chartBox) walk.appendChild(fig); else walk.classList.add("no-fig");
 
-      const panel = mk("div", "r-panel");
-      const top = mk("div", "r-ptop");
-      counter = mk("span", "r-mono"); top.appendChild(counter);
-      const x = mk("button", "r-x", "+"); x.type = "button"; x.setAttribute("aria-label", "Close");
+      const panel = mk("div", "wk-panel"); panel.setAttribute("aria-live", "polite");
+      const top = mk("div", "wk-ptop");
+      counter = mk("span", "ds-label"); top.appendChild(counter);
+      const x = mk("button", "wk-x"); x.type = "button"; x.setAttribute("aria-label", "Close deep dive");
+      x.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
       x.addEventListener("click", () => ctl.toggle(card)); top.appendChild(x);
       panel.appendChild(top);
-      h = mk("h4", "r-step-h"); body = mk("div", "r-step-t");
-      panel.appendChild(h); panel.appendChild(body);
+      h = mk("h4", "wk-step-h"); text = mk("div", "wk-step-t");
+      panel.appendChild(h); panel.appendChild(text);
 
-      // last step: evidence (links, public files, setting). Course and group labels stay off the public page.
-      endBox = mk("div", "r-end");
-      const ev = linkRow(p, "r-links");
-      (p.files || []).filter((f) => f.public && f.src).forEach((f) => { const a = mk("a", "r-link", (f.title || "File") + " →"); a.href = f.src; a.target = "_blank"; a.rel = "noopener"; ev.appendChild(a); });
-      if (ev.children.length) { endBox.appendChild(mk("span", "r-mono", "Evidence")); endBox.appendChild(ev); }
-      if (p.setting) endBox.appendChild(mk("p", "r-setting", p.setting));
+      /* last step: evidence (links, public files, setting). Course and group labels stay off the public page. */
+      endBox = mk("div", "wk-end");
+      const ev = mk("div", "wk-links");
+      links.forEach((l) => { const demo = l.kind === "demo" || l.kind === "video"; ev.appendChild(btn((l.label || "Link") + (l.kind === "github" ? " →" : " ↗"), l.url, demo, true)); });
+      (p.files || []).filter((f) => f.public && f.src).forEach((f) => ev.appendChild(btn((f.title || "File") + " ↗", f.src, false, true)));
+      if (ev.children.length) { endBox.appendChild(mk("span", "ds-label", "Evidence")); endBox.appendChild(ev); }
+      if (p.setting) endBox.appendChild(mk("p", "wk-setting", p.setting));
       panel.appendChild(endBox);
 
-      const nav = mk("div", "r-nav");
-      back = mk("button", "r-back", "← Back"); back.type = "button"; back.addEventListener("click", () => go(step - 1));
-      dots = mk("div", "r-dots");
-      steps.forEach((s, j) => { const d = mk("button", "r-dot"); d.type = "button"; d.setAttribute("aria-label", s.k); d.addEventListener("click", () => go(j)); dots.appendChild(d); });
-      next = mk("button", "r-next"); next.type = "button"; next.addEventListener("click", () => (step === steps.length - 1 ? ctl.toggle(card) : go(step + 1)));
+      const nav = mk("div", "wk-nav");
+      back = mk("button", "wk-back", "← Back"); back.type = "button"; back.addEventListener("click", () => go(step - 1));
+      dots = mk("div", "wk-dots");
+      steps.forEach((s, j) => { const d = mk("button", "wk-dot"); d.type = "button"; d.setAttribute("aria-label", s.k); d.addEventListener("click", () => go(j)); dots.appendChild(d); });
+      next = mk("button", "ds-btn ds-btn-dark wk-next"); next.type = "button";
+      next.addEventListener("click", () => (step === steps.length - 1 ? ctl.toggle(card) : go(step + 1)));
       nav.appendChild(back); nav.appendChild(dots); nav.appendChild(next);
       panel.appendChild(nav);
-      panel.setAttribute("aria-live", "polite");
       walk.appendChild(panel);
     }
 
     function showMedia(s, idx) {
       // Solution step shows the chart when there is one. From Solution on, the diagram replaces the cover.
-      const solIdx = steps.findIndex((x) => x.kind === "solution");
+      const solIdx = steps.findIndex((q) => q.kind === "solution");
       const after = solIdx >= 0 ? idx >= solIdx : idx >= 1;
       const useChart = chartBox && s.kind === "solution";
       const img = useChart ? null : (after && dia) ? dia : (vis || dia);
@@ -210,12 +234,11 @@
       media.hidden = showChart || !img;
       if (!showChart && img && (!curImg || curImg[0] !== img[0])) {
         const old = media.querySelector("img"); if (old) old.remove();
-        media.insertBefore(imgNode(img[0], img[1] || p.title, "r-img"), media.firstChild);
+        media.insertBefore(imgNode(img[0], img[1] || p.title, "wk-img"), media.firstChild);
       }
       curImg = showChart ? null : img;
       cap.textContent = showChart ? "" : (img && img[1]) || "";
       cap.hidden = !cap.textContent;
-      if (showChart && !grown) { grown = true; requestAnimationFrame(() => setTimeout(() => grow.forEach((f) => f()), reduce ? 0 : 150)); }
     }
 
     function go(n2) {
@@ -223,54 +246,41 @@
       const s = steps[step], last = step === steps.length - 1;
       counter.textContent = "Step " + (step + 1) + " of " + steps.length;
       h.textContent = s.k;
-      body.innerHTML = "";
-      if (s.kind === "list") s.v.forEach((t) => body.appendChild(mk("p", "r-call", t)));
-      else body.appendChild(mk("p", "", s.v));
+      text.innerHTML = "";
+      if (s.kind === "list") s.v.forEach((v) => text.appendChild(mk("p", "wk-call", v)));
+      else text.appendChild(mk("p", "", s.v));
       endBox.hidden = !last || !endBox.children.length;
       back.disabled = step === 0;
       next.textContent = last ? "Done" : "Next →";
-      [...dots.children].forEach((d, j) => d.classList.toggle("on", j === step));
-      if (walk.contains(fig)) showMedia(s, step);
-      body.classList.remove("r-in"); void body.offsetWidth; if (!reduce) body.classList.add("r-in");
+      [...dots.children].forEach((d, j) => { if (j === step) d.setAttribute("aria-current", "step"); else d.removeAttribute("aria-current"); });
+      if (walk.querySelector(".wk-fig")) showMedia(s, step);
+      text.classList.remove("wk-in"); void text.offsetWidth; if (!reduce) text.classList.add("wk-in");
     }
     card.appendChild(walk);
 
     card._set = (open) => {
       card.classList.toggle("open", open);
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-      btn.querySelector("span").textContent = open ? "Close" : btnLabel;
+      walk.hidden = !open;
+      dd.setAttribute("aria-expanded", open ? "true" : "false");
+      dd.querySelector("span").textContent = open ? "Close" : label;
       if (open) { build(); go(0); }
     };
     card._step = (d) => go(step + d);
     return card;
   }
 
-  /* ---------- page (same as work.js except the card list) ---------- */
+  /* ---------- page ---------- */
   Promise.all([loadJSON("data/site.json"), loadJSON("data/hero.json"), loadJSON("data/lanes.json"), loadJSON("data/page.json").catch(() => null)])
     .then(([site, hero, data, page]) => {
       applyOrgChrome(site);
       renderOrgPage(site, page);
+      document.querySelectorAll("#hero-ctas a").forEach((a, i) => { a.className = "ds-btn " + (i === 0 ? "ds-btn-dark" : "ds-btn-line"); });
       mountSectionMedia("top", hero);
       setText("hero-eyebrow", hero.eyebrow); setText("hero-headline", hero.headline); setText("hero-lede", hero.lede);
 
       const lanes = data.lanes || [];
       const liveOf = (l) => (l.projects || []).filter((p) => p.status === "live");
-      const draftOf = (l) => (l.projects || []).filter((p) => p.status === "draft");
-      const visibleOf = (l) => (l.projects || []).filter((p) => p.status === "live" || p.status === "draft");
-      const shipped = lanes.reduce((a, l) => a + liveOf(l).length, 0);
-      const drafted = lanes.reduce((a, l) => a + draftOf(l).length, 0);
-      const queued = lanes.reduce((a, l) => a + (l.pipeline || []).length, 0);
-
-      const setNum = (id, v) => { const e = $(id); if (e) e.textContent = v; };
-      setNum("t-live", shipped); setNum("t-draft", drafted); setNum("t-pipe", queued);
-      const total = shipped + drafted + queued;
-      const tbL = $("tb-live"), tbD = $("tb-draft");
-      if (tbL && tbD && total > 0) {
-        setTimeout(() => {
-          if (shipped > 0) tbL.style.width = ((shipped / total) * 100) + "%";
-          if (drafted > 0) tbD.style.width = ((drafted / total) * 100) + "%";
-        }, reduce ? 0 : 300);
-      }
+      const showPipe = !!(page && page.showPipeline);
 
       // one open card at a time, Esc closes, arrow keys step
       let openCard = null;
@@ -281,73 +291,77 @@
           card._set(willOpen); openCard = willOpen ? card : null;
           if (willOpen) {
             const top = card.getBoundingClientRect().top;
-            if (top < 80 || top > window.innerHeight * 0.6) window.scrollTo({ top: top + window.scrollY - 110, behavior: reduce ? "auto" : "smooth" });
+            if (top < 80 || top > window.innerHeight * 0.6) window.scrollTo({ top: top + window.scrollY - 130, behavior: reduce ? "auto" : "smooth" });
           }
         },
       };
       document.addEventListener("keydown", (e) => {
-        if (!openCard || document.querySelector(".r-lightbox")) return;
-        if (e.target.closest && e.target.closest("input, textarea, select")) return;
+        if (!openCard || document.querySelector(".wk-lightbox")) return;
+        if (e.target.closest && e.target.closest("input, textarea, select, [role=dialog]")) return;
         if (e.key === "Escape") ctl.toggle(openCard);
         else if (e.key === "ArrowRight") { e.preventDefault(); openCard._step(1); }
         else if (e.key === "ArrowLeft") { e.preventDefault(); openCard._step(-1); }
       });
 
-      const mount = $("lanes"); const sections = []; let n = 0;
-      lanes.forEach((lane, i) => {
-        const sec = mk("section", i % 2 ? "band w-lane" : "section w-lane"); sec.id = lane.id;
+      const mount = $("lanes"); mount.innerHTML = "";
+      const sections = []; let total = 0;
+      lanes.forEach((lane) => {
+        const live = liveOf(lane);
+        if (!live.length) return;                       // a group shows only when it has a live case
+        total += live.length;
+        const sec = mk("section", "wk-lane"); sec.id = lane.id; sec.setAttribute("aria-labelledby", lane.id + "-h");
         const wrap = mk("div", "wrap");
-        wrap.innerHTML = '<div class="section-head"><div class="sh-main"><span class="eyebrow"></span><h2></h2></div><p class="sh-side"></p></div>';
-        wrap.querySelector(".eyebrow").textContent = ((page && page.laneEyebrow) || "Lane") + " " + (i + 1);
-        wrap.querySelector("h2").textContent = lane.name;
-        wrap.querySelector(".sh-side").textContent = lane.blurb || "";
-        const emb = embedNode(lane.embed); if (emb) wrap.querySelector(".section-head").appendChild(emb);
-        const shown = visibleOf(lane);
-        if (shown.length) {
-          const list = mk("div", "r-list");
-          shown.forEach((p, j) => { const c = cardNode(p, n++, ctl); if (j >= LANE_LIMIT) c.classList.add("r-more"); list.appendChild(c); });
-          wrap.appendChild(list);
-          if (shown.length > LANE_LIMIT) {
-            const more = mk("button", "r-showall"); more.type = "button";
-            more.textContent = "Show all " + shown.length;
-            more.addEventListener("click", () => { list.classList.add("all"); more.remove(); });
-            wrap.appendChild(more);
-          }
-        }
+        const head = mk("div", "wk-lane-head"), left = mk("div");
+        left.appendChild(mk("span", "ds-label", live.length === 1 ? "1 case" : live.length + " cases"));
+        const h2 = mk("h2", "", lane.name || ""); h2.id = lane.id + "-h"; left.appendChild(h2);
+        head.appendChild(left);
+        if (has(lane.blurb)) head.appendChild(mk("p", "", lane.blurb));
+        const emb = embedNode(lane.embed); if (emb) head.appendChild(emb);
+        wrap.appendChild(head);
+        const list = mk("div", "wc-list");
+        live.forEach((p) => list.appendChild(cardNode(p, ctl)));
+        wrap.appendChild(list);
         const pipe = lane.pipeline || [];
-        if (pipe.length) {
-          const d = mk("details", "w-pipe"); if (!shown.length) d.open = true;
-          const sm = mk("summary"); sm.appendChild(mk("span", "w-pipe-h", "In the pipeline")); sm.appendChild(mk("span", "w-mono", shown.length + " shipped · " + pipe.length + " in progress"));
-          d.appendChild(sm);
-          const list = mk("div", "w-pipe-list");
-          pipe.forEach((t, j) => {
-            const r = mk("div", "w-pipe-row"); r.appendChild(mk("span", "w-mono", String(j + 1).padStart(2, "0")));
-            if (t.link) { const a = mk("a", "", t.title); a.href = t.link; a.target = "_blank"; a.rel = "noopener"; r.appendChild(a); } else r.appendChild(mk("span", "", t.title));
-            r.appendChild(mk("span", "w-mono w-status", t.status || "In the pipeline")); list.appendChild(r);
-          });
-          d.appendChild(list); wrap.appendChild(d);
+        if (showPipe && pipe.length) {
+          const d = mk("details", "wk-pipe"); d.appendChild(mk("summary", "", "Coming next"));
+          const ul = mk("ul");
+          pipe.forEach((t) => { const li = mk("li"); if (t.link) { const a = mk("a", "", t.title); a.href = t.link; a.target = "_blank"; a.rel = "noopener"; li.appendChild(a); } else li.textContent = t.title; ul.appendChild(li); });
+          d.appendChild(ul); wrap.appendChild(d);
         }
         sec.appendChild(wrap); mount.appendChild(sec); mountSectionMedia(lane.id, lane); sections.push(sec);
       });
 
-      // filter chips in the nav row
+      // filter buttons in the header's second row: live groups only
       const sub = $("nav-chips");
       if (sub) {
         sub.innerHTML = "";
         const chips = [];
         const pick = (id) => {
-          chips.forEach((c) => c.classList.toggle("on", c.dataset.id === id));
+          chips.forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.id === id)));
           sections.forEach((s) => { s.hidden = id !== "all" && s.id !== id; });
-          const t = $(id === "all" ? "top" : id); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 100, behavior: reduce ? "auto" : "smooth" });
+          const t = $(id === "all" ? "top" : id); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 120, behavior: reduce ? "auto" : "smooth" });
         };
-        [["all", (page && page.subnavTop) || "All", shipped + drafted + queued]].concat(lanes.map((l) => [l.id, l.name, visibleOf(l).length + (l.pipeline || []).length])).forEach(([id, label, cnt]) => {
-          const b = mk("button", "w-chip-btn" + (id === "all" ? " on" : "")); b.type = "button"; b.dataset.id = id;
-          b.appendChild(document.createTextNode(label)); if (id !== "all") b.appendChild(mk("i", "", String(cnt)));
+        [["all", (page && page.subnavTop) || "All", total]].concat(sections.map((s) => { const l = lanes.find((x) => x.id === s.id); return [l.id, l.name, liveOf(l).length]; })).forEach(([id, name, cnt]) => {
+          const b = mk("button", "wk-chip"); b.type = "button"; b.dataset.id = id;
+          b.setAttribute("aria-pressed", String(id === "all"));
+          b.appendChild(document.createTextNode(name)); b.appendChild(mk("i", "", String(cnt)));
           b.addEventListener("click", () => pick(id)); sub.appendChild(b); chips.push(b);
         });
       }
+
+      // a link to #card-… (Home's Deep dive buttons) scrolls to that card
+      if (/^#card-/.test(location.hash)) { const c = document.querySelector(location.hash); if (c) setTimeout(() => c.scrollIntoView({ block: "center" }), 60); }
+
+      // one fade-in per card, only below the first screen
+      if ("IntersectionObserver" in window && !reduce) {
+        const cards = document.querySelectorAll(".wk-card");
+        const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
+        cards.forEach((c) => { if (c.getBoundingClientRect().top > window.innerHeight) { c.classList.add("wk-rv"); io.observe(c); } });
+        setTimeout(() => cards.forEach((c) => c.classList.add("in")), 2500);
+      }
+
       // section order, hidden sections, looks and builder-added sections (admin page builder)
       if (window.Theme && Theme.applyLayout && page && page.layout) Theme.applyLayout(document.querySelector("main"), { hero: hero, lanes: data, page: page || {} }, { site: site, layoutIn: "page" });
     })
-    .catch(() => { setText("hero-headline", "Content couldn't load — try refreshing."); });
+    .catch(() => { setText("hero-headline", "Content couldn't load. Try refreshing."); });
 })();

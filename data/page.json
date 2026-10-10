@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Analytics Work — Lorisca Cessia",
-    "description": "Case studies in talent systems, analytics, and operations. The obvious metric points one way; the mechanism underneath points the other."
+    "title": "Analytics Work · Lorisca Cessia",
+    "description": "Case studies in talent systems, analytics, and operations. The obvious metric points one way. The mechanism underneath points the other."
   },
   "backLink": {
     "label": "Lorisca ↗",
@@ -26,7 +26,7 @@
     "rows": [
       {
         "k": "Format",
-        "v": "Case studies with repos — queries, notebooks, visuals"
+        "v": "Case studies with repos: queries, notebooks, visuals"
       },
       {
         "k": "Pipeline",
@@ -53,5 +53,6 @@
         "style": {}
       }
     ]
-  }
+  },
+  "showPipeline": false
 }
