@@ -26,7 +26,7 @@
 .w-chip.out { background: none; border: 1px solid var(--accent); }
 .w-foot { display: flex; justify-content: space-between; align-items: center; gap: .6rem; margin-top: .35rem; padding-top: .6rem; border-top: 1px solid var(--hairline); }
 .w-hint { font-size: .74rem; color: var(--steel); font-style: italic; min-width: 0; }
-.w-btn { flex: none; white-space: nowrap; display: inline-flex; align-items: center; gap: .45rem; padding: .42rem .85rem; border-radius: 999px; border: none; font-family: var(--body); font-size: .78rem; font-weight: 700; background: var(--accent); color: #fff; cursor: pointer; transition: transform .4s cubic-bezier(.34,1.56,.64,1), background .25s; }
+.w-btn { flex: none; white-space: nowrap; display: inline-flex; align-items: center; gap: .45rem; padding: .42rem .85rem; border-radius: 999px; border: none; font-family: var(--body); font-size: .78rem; font-weight: 700; background: var(--accent); color: var(--on-accent); cursor: pointer; transition: transform .4s cubic-bezier(.34,1.56,.64,1), background .25s; }
 .w-btn:hover { transform: scale(1.06) rotate(-1.5deg); }
 .w-btn i { font-style: normal; display: inline-block; transition: transform .45s cubic-bezier(.34,1.56,.64,1); }
 .w-card.open .w-btn { background: var(--ink); }

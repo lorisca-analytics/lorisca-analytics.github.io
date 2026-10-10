@@ -3,33 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>/* theme before first paint: ?theme= from another of the three sites, else stored choice, else device */(function(){try{var d=document.documentElement,u=new URL(location.href),q=u.searchParams.get("theme");if(q==="dark"||q==="light"){localStorage.setItem("lori-theme",q);u.searchParams.delete("theme");history.replaceState(history.state,"",u.pathname+u.search+u.hash);}var s=localStorage.getItem("lori-theme");d.setAttribute("data-theme",s==="dark"||s==="light"?s:(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));}catch(e){}})();</script>
 <title>Analytics Work — Lorisca Cessia</title>
 <meta name="description" content="Case studies in talent systems, analytics, and operations. The obvious metric points one way; the mechanism underneath points the other.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Martian+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=2">
 <link rel="stylesheet" href="https://lori-sca.github.io/theme.css">
 <link rel="stylesheet" href="work.css">
 <link rel="stylesheet" href="rows.css?v=1">
+<link rel="stylesheet" href="https://lori-sca.github.io/shared.css?v=1">
 </head>
 <body data-page="work">
 
 <nav class="nav">
-  <div class="nav-inner">
-    <a class="wordmark" href="index.html">
-      <span class="org-hero-logo" style="width:2rem;height:2rem;font-size:.85rem;border-radius:8px;margin:0;">A</span>
-      <span class="wm-name">Analytics Work</span>
-      <span class="wm-role">lorisca-analytics</span>
-    </a>
-    <div class="nav-links">
-      <a data-nav="main" href="https://lori-sca.github.io">Lorisca ↗</a>
-    </div>
+  <div class="nav-inner lh">
+    <a class="lh-brand" href="https://lori-sca.github.io/"><b>Lorisca Cessia</b><span>People, operations and the data behind them</span></a>
+    <div class="lh-links" id="lh-links"><a href="https://lori-sca.github.io/">Home</a><a href="https://lorisca-analytics.github.io/">Work</a><a href="https://lorisca-builds.github.io/">Builds</a><a href="https://lori-sca.github.io/off-the-clock.html">Off the clock</a><a href="https://lori-sca.github.io/about.html">About</a></div>
   </div>
   <div class="nav-chips">
     <div class="nav-chips-inner" id="nav-chips" role="tablist" aria-label="Filter lanes"></div>
   </div>
 </nav>
+<script src="https://lori-sca.github.io/header.js?v=1"></script>
 
 <main>
   <section class="hero" id="top">

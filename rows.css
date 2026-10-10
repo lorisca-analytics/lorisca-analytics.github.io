@@ -27,7 +27,7 @@
 .r-links { display: flex; flex-wrap: wrap; gap: .4rem; }
 .r-link { font-size: .8rem; font-weight: 700; color: var(--ink); background: var(--mist); border: 1px solid transparent; border-radius: 999px; padding: .32rem .8rem; text-decoration: none; transition: transform .35s cubic-bezier(.34,1.56,.64,1), background .2s; }
 .r-link:hover { background: var(--mist-deep); transform: translateY(-1px); }
-.r-link.demo { background: var(--accent); color: #fff; }
+.r-link.demo { background: var(--accent); color: var(--on-accent); }
 .r-link.demo:hover { background: var(--steel); }
 .r-btn { flex: none; white-space: nowrap; display: inline-flex; align-items: center; gap: .5rem; padding: .45rem .95rem; border-radius: 999px; border: none; font-family: var(--body); font-size: .82rem; font-weight: 700; background: var(--ink); color: var(--white); cursor: pointer; transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
 .r-btn:hover { transform: scale(1.05) rotate(-1.5deg); }

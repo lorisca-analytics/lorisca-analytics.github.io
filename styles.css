@@ -4,21 +4,7 @@
    Type: Archivo (display) · Plus Jakarta Sans (body) · Martian Mono (micro-labels only)
    ============================================================ */
 
-:root {
-  --white: #ffffff;
-  --mist: #eef2f6;
-  --mist-deep: #e2e9f0;
-  --ink: #1e2d42;          /* 13.9:1 on white */
-  --steel: #4a6a8f;        /* 5.6:1 on white — secondary text */
-  --accent: #5b7fa6;       /* large/bold + interactive accents only */
-  --hairline: #d5dfe8;     /* structural rules, never text */
-  --display: "Archivo", system-ui, sans-serif;
-  --body: "Plus Jakarta Sans", system-ui, sans-serif;
-  --mono: "Martian Mono", ui-monospace, monospace;
-  --gutter: clamp(1.25rem, 4vw, 3rem);
-  --section-pad: clamp(4.5rem, 10vw, 9rem);
-  --measure: 66ch;
-}
+/* colors, fonts and spacing live in https://lori-sca.github.io/shared.css (loaded last) */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
