@@ -425,11 +425,61 @@
       "id": "consulting",
       "name": "Consulting",
       "blurb": "Live-client engagements with real stakeholders and real constraints. Team-based consulting work with deliverables, distinct from solo analyses.",
-      "projects": [],
-      "pipeline": [
+      "projects": [
         {
-          "title": "M&T Bank: live-client engagement (D1–D6 deliverables)"
-        },
+          "id": "gig-worker-referral-platform",
+          "title": "Gig Worker Referral Platform",
+          "hook": "The bank already banks these people. It just can't see their income.",
+          "metric": "39-person survey · 8 interviews · 4-role prototype",
+          "status": "draft",
+          "links": [
+            {
+              "label": "Repo",
+              "url": "https://github.com/lorisca-analytics/gig-worker-referral-platform",
+              "kind": "github"
+            },
+            {
+              "label": "Live prototype",
+              "url": "https://gig-worker-referral-platform.lovable.app",
+              "kind": "demo"
+            }
+          ],
+          "body": {
+            "problem": "Client Bank (anonymized for publishing) checks income through payroll only, so a customer with a W-2 job and documented 1099 side income gets scored on half their pay and often auto-rejected. Those same people are the bank's future small business customers, and right now it can't even see them.",
+            "approach": "We reframed the problem from credit to recognition and designed a referral pilot where a trusted partner vouches for side income, and I built a working prototype of the referral flow across four roles.",
+            "result": "We handed the bank a pilot scoped so it could say yes: one state, existing products and data tools, partner payouts paid only when a customer activates, and clear go/no-go checkpoints. The hardest open risks are named in the plan."
+          },
+          "context": "Banking strategy, customer research, working prototype. Client: Client Bank (anonymized for publishing). Team project. I built the prototype.",
+          "calls": [
+            "We caught the wrong partner type. Our lead partner contact turned out to be a brand-side marketing agency, which can't vouch for anyone's income. We named it in the final pitch as the most material open item instead of quietly patching it.",
+            "We moved from person-to-person referrals to business referrals. The legal review flagged risk in individuals referring other individuals. A business partner vouching for earnings clears that concern and has skin in the game.",
+            "I built the payout logic into the prototype. The Payments Ops screen pays a partner only after a customer activates, so the cost model is something you can click through, not a claim on a slide."
+          ],
+          "visual": "https://raw.githubusercontent.com/lorisca-analytics/gig-worker-referral-platform/main/triangle.svg",
+          "visualAlt": "Three-way referral exchange between gig worker, partner and bank",
+          "reviewNotes": {
+            "notes": [],
+            "missing": []
+          },
+          "trace": {
+            "problem": "Documented side income counts as zero",
+            "move": "A partner referral pilot and a four-role prototype",
+            "result": "About $100 per activated customer vs $350 to $600"
+          },
+          "cardVisual": {
+            "kind": "bars",
+            "label": "Cost per new customer",
+            "aLabel": "Industry estimates",
+            "aValue": 350,
+            "aText": "$350 to $600",
+            "bLabel": "Pilot target",
+            "bValue": 100,
+            "bText": "About $100",
+            "big": "About $100"
+          }
+        }
+      ],
+      "pipeline": [
         {
           "title": "Autodesk AutoProc: LATAM procurement strategy"
         }
