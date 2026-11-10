@@ -90,10 +90,7 @@
       ],
       "pipeline": [
         {
-          "title": "Cleaning a visa dataset without deleting the signal"
-        },
-        {
-          "title": "The recruitment single source of truth (Bank Mega)"
+          "title": "The recruitment front door"
         },
         {
           "title": "Attrition was a promotion problem"
@@ -481,7 +478,7 @@
       ],
       "pipeline": [
         {
-          "title": "Autodesk AutoProc: LATAM procurement strategy"
+          "title": "A procurement play for a design software company"
         }
       ]
     }
