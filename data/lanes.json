@@ -445,7 +445,7 @@
             }
           ],
           "body": {
-            "problem": "Our team launched an international bike company, placed second after Q1, then collapsed in Q3: zero paid search, 78% of orders unfulfilled, fragmented messaging, and the quarter's worst loss (-$360K operating profit).",
+            "problem": "I ran analytics and HR for an international bike company that placed second after Q1, then collapsed in Q3: zero paid search, 78% of orders unfulfilled, fragmented messaging, and the quarter's worst loss (-$360K operating profit).",
             "approach": "A diagnostic audit: benchmark every marketing dimension against the market, decompose losses by segment, trace each failure to an organizational root cause, then size a corrective plan with targets.",
             "result": "Operating profit went from -$360K (Q3) to nearly breakeven in Q4 (-$20K) to +$703K in Q6. Revenue grew 13x off the Q3 trough."
           },
@@ -576,13 +576,13 @@
           ],
           "body": {
             "problem": "Client Bank (anonymized for publishing) checks income through payroll only, so a customer with a W-2 job and documented 1099 side income gets scored on half their pay and often auto-rejected. Those same people are the bank's future small business customers, and right now it can't even see them.",
-            "approach": "We reframed the problem from credit to recognition and designed a referral pilot where a trusted partner vouches for side income, and I built a working prototype of the referral flow across four roles.",
-            "result": "We handed the bank a pilot scoped so it could say yes: one state, existing products and data tools, partner payouts paid only when a customer activates, and clear go/no-go checkpoints. The hardest open risks are named in the plan."
+            "approach": "I reframed the problem from credit to recognition, designed a referral pilot where a trusted partner vouches for side income, and built a working prototype of the referral flow across four roles.",
+            "result": "I handed the bank a pilot scoped so it could say yes: one state, existing products and data tools, partner payouts paid only when a customer activates, and clear go/no-go checkpoints. The hardest open risks are named in the plan."
           },
-          "context": "Banking strategy, customer research, working prototype. Client: Client Bank (anonymized for publishing). Team project. I built the prototype.",
+          "context": "Banking strategy, customer research, working prototype. Client: Client Bank (anonymized for publishing). I led problem framing and segmentation, and built the prototype.",
           "calls": [
-            "We caught the wrong partner type. Our lead partner contact turned out to be a brand-side marketing agency, which can't vouch for anyone's income. We named it in the final pitch as the most material open item instead of quietly patching it.",
-            "We moved from person-to-person referrals to business referrals. The legal review flagged risk in individuals referring other individuals. A business partner vouching for earnings clears that concern and has skin in the game.",
+            "I caught the wrong partner type. The lead partner contact turned out to be a brand-side marketing agency, which can't vouch for anyone's income. I named it in the final pitch as the most material open item instead of quietly patching it.",
+            "I moved the pilot from person-to-person referrals to business referrals. The legal review flagged risk in individuals referring other individuals. A business partner vouching for earnings clears that concern and has skin in the game.",
             "I built the payout logic into the prototype. The Payments Ops screen pays a partner only after a customer activates, so the cost model is something you can click through, not a claim on a slide."
           ],
           "visual": "https://raw.githubusercontent.com/lorisca-analytics/gig-worker-referral-platform/main/triangle.svg",
