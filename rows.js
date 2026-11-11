@@ -166,10 +166,13 @@
     const links = (p.links || []).filter((l) => l && l.url);
     const repo = links.filter((l) => l.kind === "github")[0];
     if (repo) foot.appendChild(btn(repo.label || "Repo", repo.url, false, true));
-    const more = links.length - (repo ? 1 : 0);
+    /* optional "front": true on a link puts it beside Repo on the card face (for example a certificate). It stays in the deep dive too. */
+    const front = links.filter((l) => l !== repo && l.front === true);
+    front.forEach((l) => foot.appendChild(btn(l.label || "Link", l.url, false, true)));
+    const more = links.length - (repo ? 1 : 0) - front.length;
     if (more > 0 && steps.length) foot.appendChild(mk("span", "wc-note", more === 1 ? "1 more link in the deep dive" : more + " more links in the deep dive"));
     else if (p.tools && p.tools.length) foot.appendChild(mk("span", "wc-note", p.tools.join(", ")));
-    if (!steps.length) links.filter((l) => l !== repo).forEach((l) => foot.appendChild(btn(l.label || "Link", l.url, false, true)));
+    if (!steps.length) links.filter((l) => l !== repo && front.indexOf(l) < 0).forEach((l) => foot.appendChild(btn(l.label || "Link", l.url, false, true)));
     if (foot.children.length) body.appendChild(foot);
     card.appendChild(body);
     card.appendChild(picture(p));

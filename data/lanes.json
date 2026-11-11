@@ -177,14 +177,14 @@
         {
           "id": "people-analytics-r",
           "repo": "lorisca-analytics/people-analytics-r",
-          "title": "Why accidents rose at every site",
+          "title": "HR analytics in R: why accidents rose at every site",
           "status": "live",
           "group": "work",
           "year": "2026",
-          "hook": "The quick read said fund an engagement program at the one site where disengagement jumped. I checked it first. Holding each site's disengagement at its 2016 level, the 2017 accident rate barely moves, and almost all the extra accidents were mild. So I'd check how incidents get reported before spending on engagement. The same check on recruiting showed channels can't be ranked until hire source is tracked.",
-          "metric": "Disengagement explains about 3% of the rise in accidents",
+          "hook": "An HR analytics case on employee data from a 1,470-person company. The quick read said fund an engagement program at the one site where disengagement jumped. I checked it first. Holding each site's disengagement at its 2016 level, the 2017 accident rate barely moves, and almost all the extra accidents were mild. So I'd check how incidents get reported before spending on engagement. The same check on recruiting data showed channels can't be ranked until hire source is tracked.",
+          "metric": "HR analytics · 1,470 employees · R",
           "trace": {
-            "problem": "The obvious cause points at the wrong fix",
+            "problem": "The obvious HR answer points at the wrong fix",
             "move": "Paired tests and a what-if breakdown before any ranking",
             "result": "Check incident reporting first, and track hire source before ranking channels"
           },
@@ -225,7 +225,8 @@
             {
               "label": "Certificate: HR Analytics in R (DataCamp)",
               "url": "https://www.datacamp.com/statement-of-accomplishment/course/0f0a451a6bb3359417b6edd76cd0318f2368d2e9",
-              "kind": "other"
+              "kind": "other",
+              "front": true
             }
           ],
           "visual": "https://raw.githubusercontent.com/lorisca-analytics/people-analytics-r/main/figures/1-accidents-by-site.png",
