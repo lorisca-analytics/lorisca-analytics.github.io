@@ -121,6 +121,55 @@
           ],
           "visual": "https://raw.githubusercontent.com/lorisca-analytics/recruitment-front-door/main/docs/candidate-card.png",
           "visualAlt": "Sample one-page candidate card with the decision trail and probe points"
+        },
+        {
+          "id": "relay-ai-transformation",
+          "title": "AI everywhere, without automating the moat",
+          "status": "live",
+          "group": "mba",
+          "year": "2026",
+          "hook": "The board wanted AI everywhere. The people most exposed to it were the ones who held the community together, so I designed who owns each warning and where AI may act.",
+          "metric": "11 days from warning to reorder in the case. Hours once the signal has an owner (demo on made-up data).",
+          "trace": {
+            "problem": "A warning sat 11 days with no owner",
+            "move": "One owner and two clocks per signal, AI drafts and people decide",
+            "result": "A working demo plus a strategy built around the exposed roles"
+          },
+          "links": [
+            {
+              "label": "Live demo",
+              "url": "https://lorisca-analytics.github.io/relay-ai-transformation/",
+              "kind": "demo"
+            },
+            {
+              "label": "Repo",
+              "url": "https://github.com/lorisca-analytics/relay-ai-transformation",
+              "kind": "github"
+            }
+          ],
+          "tools": [
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "Node test runner"
+          ],
+          "body": {
+            "problem": "A $600M activewear brand was told to put AI everywhere. Its edge was its community, and the roles most exposed to AI were the ones delivering it. In December a demand warning sat for 11 days because nobody owned it.",
+            "approach": "I treated it as a coordination problem, turned down a $2.8M vendor engine whose contract shared customer data, and set three measures with owners and guard-rails. Then I rebuilt the prototype as a demo where every warning has an owner and two clocks.",
+            "hers": "I did the strategy work: the diagnosis, the vendor call, the response to the voice-cloning incident, the three measures, the case against a blanket ban on customer-facing AI, and the rebuilt demo. The team joined the final video presentation.",
+            "result": "A plan that says which work AI takes and who owns each call, and a tested demo that shows a warning reaching a named person in hours."
+          },
+          "repo": "lorisca-analytics/relay-ai-transformation",
+          "visual": "https://raw.githubusercontent.com/lorisca-analytics/relay-ai-transformation/main/docs/demo.png",
+          "visualAlt": "The stock alarm tab: December replayed, with the first warning marked and the 11 days vs 2 hours comparison",
+          "setting": "Team of six. I did the strategy work and rebuilt the demo. The team joined the final video.",
+          "context": "A board told a $600M activewear brand to put AI everywhere. Its edge was a community of 1,500 ambassadors, and about 180 roles doing routine language work were the ones most exposed to AI.",
+          "outcome": "In the case, a demand warning took 11 days to become a reorder. In the demo, the same warning reaches a named owner and closes in hours.",
+          "calls": [
+            "Turned down a $2.8M vendor engine whose contract let it train on customer data for other clients.",
+            "Chose private repair with the community before any public statement after an AI voice-cloning incident.",
+            "Argued against a blanket ban on customer-facing AI, because the sizing tool was already worse for plus sizes and had no owner."
+          ]
         }
       ],
       "pipeline": [
