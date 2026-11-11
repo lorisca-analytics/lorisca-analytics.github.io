@@ -289,6 +289,7 @@
           if (openCard && openCard !== card) openCard._set(false);
           const willOpen = openCard !== card;
           card._set(willOpen); openCard = willOpen ? card : null;
+          document.body.classList.toggle("wk-has-open", !!openCard);
           if (willOpen) {
             const top = card.getBoundingClientRect().top;
             if (top < 80 || top > window.innerHeight * 0.6) window.scrollTo({ top: top + window.scrollY - 130, behavior: reduce ? "auto" : "smooth" });
