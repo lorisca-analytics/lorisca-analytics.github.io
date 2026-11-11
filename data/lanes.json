@@ -173,6 +173,65 @@
           ],
           "visual": "https://raw.githubusercontent.com/lorisca-analytics/federal-attrition-signals/main/docs/dashboard-light.png",
           "visualAlt": "Dashboard showing Army separations reported each month, with the two failing months ringed, and the agency quit ranking"
+        },
+        {
+          "id": "people-analytics-r",
+          "repo": "lorisca-analytics/people-analytics-r",
+          "title": "Why accidents rose at every site",
+          "status": "live",
+          "group": "work",
+          "year": "2026",
+          "hook": "The quick read said fund an engagement program at the one site where disengagement jumped. I checked it first. Holding each site's disengagement at its 2016 level, the 2017 accident rate barely moves, and almost all the extra accidents were mild. So I'd check how incidents get reported before spending on engagement. The same check on recruiting showed channels can't be ranked until hire source is tracked.",
+          "metric": "Disengagement explains about 3% of the rise in accidents",
+          "trace": {
+            "problem": "The obvious cause points at the wrong fix",
+            "move": "Paired tests and a what-if breakdown before any ranking",
+            "result": "Check incident reporting first, and track hire source before ranking channels"
+          },
+          "cardVisual": {
+            "kind": "bars",
+            "label": "Mild accidents, 2016 and 2017",
+            "aLabel": "2016",
+            "aValue": 87,
+            "aText": "87",
+            "bLabel": "2017",
+            "bValue": 136,
+            "bText": "136"
+          },
+          "body": {
+            "problem": "Accidents rose companywide in a year. Southfield had the biggest rise, and it is the only site where disengagement went up noticeably, so the quick read says fund an engagement program there. On recruiting, the best \"channel\" by quota attainment turns out to be the 46% of hires with no source recorded.",
+            "approach": "I treated the accident data as the same 1,470 people measured twice, with paired tests and errors grouped by employee. I recomputed 2017 with each site's 2016 disengagement to see how much of the rise it explains, and split accidents by type. On recruiting, I compared untracked hires with tracked ones before comparing channels.",
+            "hers": "Solo project on a synthetic HR dataset. I chose which questions to lead with, the checks and the framing, and wrote the R code, tests and write-up.",
+            "result": "Disengagement explains about 3% of the companywide rise. Accidents rose at all four sites and among engaged staff, and 49 of the 52 extra accidents were mild, while moderate and severe ones didn't rise detectably (38 to 41). Untracked hires leave at 13% against 28%, and once they are set aside the four channels can't be told apart."
+          },
+          "calls": [
+            "Paired tests, because the same 1,470 people appear in both years.",
+            "Kept untracked hires as their own group instead of dropping them.",
+            "Used the usual top-rating line without tuning it, and showed every other cutoff next to it."
+          ],
+          "tools": [
+            "R",
+            "dplyr",
+            "ggplot2",
+            "sandwich",
+            "testthat"
+          ],
+          "links": [
+            {
+              "label": "Repo",
+              "url": "https://github.com/lorisca-analytics/people-analytics-r",
+              "kind": "github"
+            },
+            {
+              "label": "Certificate: HR Analytics in R (DataCamp)",
+              "url": "https://www.datacamp.com/statement-of-accomplishment/course/0f0a451a6bb3359417b6edd76cd0318f2368d2e9",
+              "kind": "other"
+            }
+          ],
+          "visual": "https://raw.githubusercontent.com/lorisca-analytics/people-analytics-r/main/figures/1-accidents-by-site.png",
+          "visualAlt": "Accident rate by site in 2016 and 2017, with a what-if marker for 2017 sitting almost on top of the actual rate",
+          "diagram": "https://raw.githubusercontent.com/lorisca-analytics/people-analytics-r/main/figures/3-attrition-by-source.png",
+          "diagramAlt": "Attrition by recruiting source, with hires who have no recorded source far below every tracked channel"
         }
       ],
       "pipeline": [
