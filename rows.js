@@ -349,8 +349,29 @@
         });
       }
 
-      // a link to #card-… (Home's Deep dive buttons) scrolls to that card
-      if (/^#card-/.test(location.hash)) { const c = document.querySelector(location.hash); if (c) setTimeout(() => c.scrollIntoView({ block: "center" }), 60); }
+      // A link to #card-<id> (Home's Deep dive buttons, resume links) scrolls to that
+      // card and rings it for a moment. It never opens the deep dive or rewrites the URL.
+      const safeId = (x) => { try { return decodeURIComponent(x); } catch (e) { return x; } };
+      const focusFromHash = () => {
+        const m = /^#card-(.+)$/.exec(location.hash);
+        const c = m && document.getElementById("card-" + safeId(m[1]));
+        if (!c) return;
+        const lane = c.closest("section");
+        if (lane && lane.hidden) { const all = document.querySelector('.wk-chip[data-id="all"]'); if (all) all.click(); }
+        setTimeout(() => {
+          c.scrollIntoView({ block: "center" });
+          c.classList.remove("is-linked"); void c.offsetWidth; c.classList.add("is-linked");
+          setTimeout(() => c.classList.remove("is-linked"), 2400);
+        }, 60);
+      };
+      focusFromHash();
+      window.addEventListener("hashchange", focusFromHash);
+      // Pictures above the card can still be loading and push it down. Centre it again once they have.
+      if (document.readyState !== "complete") window.addEventListener("load", () => {
+        const m = /^#(?:card|build)-(.+)$/.exec(location.hash);
+        const c = m && document.getElementById("card-" + safeId(m[1]));
+        if (c) c.scrollIntoView({ block: "center" });
+      }, { once: true });
 
       // one fade-in per card, only below the first screen
       if ("IntersectionObserver" in window && !reduce) {

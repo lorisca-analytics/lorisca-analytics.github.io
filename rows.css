@@ -110,3 +110,8 @@
   .wk-dd i, .wk-dot { transition: none; }
 }
 .wk-rv.in:not(.open):hover { transform: translateY(-2px); }
+
+/* A card reached by a #card-<id> link (resume, Home) gets a short accent ring. Outline, so nothing shifts. */
+@keyframes card-linked { 0%, 70% { outline-color: var(--accent); } 100% { outline-color: transparent; } }
+.is-linked { outline: 2px solid var(--accent); outline-offset: 4px; animation: card-linked 2.4s ease-out forwards; }
+@media (prefers-reduced-motion: reduce) { .is-linked { animation: none; } }
