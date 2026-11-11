@@ -115,3 +115,17 @@
 @keyframes card-linked { 0%, 70% { outline-color: var(--accent); } 100% { outline-color: transparent; } }
 .is-linked { outline: 2px solid var(--accent); outline-offset: 4px; animation: card-linked 2.4s ease-out forwards; }
 @media (prefers-reduced-motion: reduce) { .is-linked { animation: none; } }
+
+/* ---------- card focus (Nov 11) ----------
+   Cards sit on a tinted page so they stand out at rest. The open card gets a solid accent ring,
+   the others fade back, and the top picture hides when the walk-through below already shows it. */
+:root { --card-page: var(--surface); --card-bg: var(--bg); --card-walk: var(--bg); --card-lift: 0 24px 50px -24px rgba(30,45,66,.45); }
+[data-theme="dark"] { --card-page: var(--bg); --card-bg: var(--surface); --card-walk: var(--surface-2); --card-lift: 0 24px 50px -20px rgba(0,0,0,.7); }
+.wk-lane { background: var(--card-page); }
+.wk-card { background: var(--card-bg); box-shadow: var(--shadow); }
+.wk-card.open { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--card-lift); }
+.wk-card.open .wk-walk { background: var(--card-walk); }
+.wk-card.open:has(> .wk-walk:not(.no-fig)) { grid-template-columns: minmax(0, 1fr); }
+.wk-card.open:has(> .wk-walk:not(.no-fig)) > .wc-visual { display: none; }
+.wk-has-open .wk-rv.in:not(.open) { opacity: .42; }
+.wk-has-open .wk-rv.in:not(.open):hover, .wk-has-open .wk-rv.in:not(.open):focus-within { opacity: 1; }
