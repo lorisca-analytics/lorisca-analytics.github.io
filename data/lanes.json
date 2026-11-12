@@ -639,6 +639,55 @@
             "Chose private repair with the community before any public statement after an AI voice-cloning incident.",
             "Argued against a blanket ban on customer-facing AI, because the sizing tool was already worse for plus sizes and had no owner."
           ]
+        },
+        {
+          "id": "hardware-launch-complexity",
+          "repo": "lorisca-analytics/hardware-launch-complexity",
+          "title": "Scoring a hardware launch before planning it",
+          "status": "live",
+          "group": "work",
+          "year": "2026",
+          "hook": "A mask startup planned a five-city launch in 164 days across three companies. I scored the plan and rebuilt its critical path. The biggest risk was a deal no one governed.",
+          "metric": "25 dimensions · 3.48 of 4",
+          "trace": {
+            "problem": "Three companies, one launch date, no one who could settle a dispute",
+            "move": "Complexity scoring and a critical-path rebuild",
+            "result": "A three-party charter and a pilot gate before the next cities open"
+          },
+          "cardVisual": {
+            "kind": "bars",
+            "label": "Where the plan's critical chain ends",
+            "aLabel": "Launch day in the plan",
+            "aValue": 164,
+            "aText": "Day 164",
+            "bLabel": "Last task in the plan's network",
+            "bValue": 134,
+            "bText": "Day 134"
+          },
+          "body": {
+            "problem": "A pre-launch mask startup in Southeast Asia planned to launch in five cities in 164 days. The launch needed the founding team, a contract factory and a technology partner to act as one, but only the founding team was bound by the plan.",
+            "approach": "I scored the plan on 25 complexity dimensions and rebuilt its critical path from the plan's own durations. As the quality check on the plan, I flagged three conflicts between its documents.",
+            "result": "The dates were tight, but the bigger gap was that no document let the three companies settle a dispute over IP, price or scope. I proposed a three-party governance charter and a pilot city that has to hit a usage target before the next cities open."
+          },
+          "calls": [
+            "Led with the governance gap, because the top complexity category won by only 0.05.",
+            "Rebuilt the schedule from the plan's durations. Its network ends on Day 134, and its certification float doesn't reproduce.",
+            "Read float next to SPI. A 6-day slip left SPI at 0.97 while two thirds of the buffer was gone."
+          ],
+          "tools": [
+            "Critical path method",
+            "Complexity scoring",
+            "Governance design",
+            "Stage gates",
+            "Python"
+          ],
+          "links": [
+            {
+              "label": "Repo",
+              "url": "https://github.com/lorisca-analytics/hardware-launch-complexity",
+              "kind": "github"
+            }
+          ]
         }
       ],
       "pipeline": [
@@ -656,9 +705,6 @@
         },
         {
           "title": "Auditing an AI transformation pitch as the person funding it"
-        },
-        {
-          "title": "Scoring a hardware launch before planning it"
         },
         {
           "title": "Designing a scorecard for a firm that only measured revenue"
